@@ -1,0 +1,25 @@
+imageの仕様がきまりました。
+
+```markdown
+![s1](imgs/s1.png)
+```
+
+を
+
+```html
+<div class="img-grid--1">
+  <div class="lb-gallery">
+    <drupal-entity
+      alt="s1"
+      title="s1"
+      data-entity-type="media"
+      data-entity-uuid="11111111-2222-3333-4444-555555555555"
+      data-embed-button="media_browser"
+      data-entity-embed-display="media_image"
+      data-entity-embed-display-settings='{"image_style":"crop_freeform","image_link":"","image_loading":{"attribute":"lazy"},"svg_render_as_image":true,"svg_attributes":{"width":"","height":""}}'
+    ></drupal-entity>
+  </div>
+</div>
+```
+
+のように変換してもらえますか。

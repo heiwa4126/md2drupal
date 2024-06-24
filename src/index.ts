@@ -15,6 +15,43 @@ type Node = {
   value?: string;
 };
 
+function processImageNode(node: Node): Node {
+  const altText = node.properties?.alt || "";
+  return {
+    type: "element",
+    tagName: "div",
+    properties: { className: "img-grid--1" },
+    children: [
+      {
+        type: "element",
+        tagName: "div",
+        properties: { className: "lb-gallery" },
+        children: [
+          {
+            type: "element",
+            tagName: "drupal-entity",
+            properties: {
+              alt: altText,
+              title: altText,
+              "data-entity-type": "media",
+              "data-entity-uuid": "11111111-2222-3333-4444-555555555555",
+              "data-embed-button": "media_browser",
+              "data-entity-embed-display": "media_image",
+              "data-entity-embed-display-settings": JSON.stringify({
+                image_style: "crop_freeform",
+                image_link: "",
+                image_loading: { attribute: "lazy" },
+                svg_render_as_image: true,
+                svg_attributes: { width: "", height: "" },
+              }),
+            },
+          },
+        ],
+      },
+    ],
+  };
+}
+
 async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: string) {
   const mdContent = readFileSync(inputFilePath, "utf-8");
 
@@ -26,11 +63,10 @@ async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: stri
       return (tree: Node) => {
         visit(tree, "element", (node: Node, index: number, parent: Node | null) => {
           if (node.tagName === "img") {
-            // Custom processing for <img> tags
-            node.properties = {
-              ...node.properties,
-              className: "custom-img-class",
-            };
+            const imgWrapper = processImageNode(node);
+            if (parent && parent.children) {
+              parent.children[index] = imgWrapper;
+            }
           }
 
           if (node.tagName === "table") {
