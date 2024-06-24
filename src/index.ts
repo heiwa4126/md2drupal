@@ -1,5 +1,5 @@
-import { readFileSync, writeFileSync } from "fs";
-import path from "path";
+import { readFileSync, writeFileSync } from "node:fs";
+import path from "node:path";
 import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
@@ -64,11 +64,24 @@ async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: stri
         visit(tree, "element", (node: Node, index: number, parent: Node | null) => {
           if (node.tagName === "img") {
             const imgWrapper = processImageNode(node);
-            if (parent && parent.children) {
+            if (parent?.children) {
               parent.children[index] = imgWrapper;
             }
           }
+        });
 
+        // Remove <p> wrapping <div class="img-grid--1">
+        visit(tree, "element", (node: Node, index: number, parent: Node | null) => {
+          if (node.tagName === "div" && node.properties?.className === "img-grid--1") {
+            if (parent && parent.tagName === "p") {
+              parent.tagName = "div";
+              parent.properties = {};
+            }
+          }
+        });
+
+        // Process table and code blocks
+        visit(tree, "element", (node: Node, index: number, parent: Node | null) => {
           if (node.tagName === "table") {
             // Custom processing for <table> tags
             const tableWrapper: Node = {
@@ -85,7 +98,7 @@ async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: stri
                 },
               ],
             };
-            if (parent && parent.children) {
+            if (parent?.children) {
               parent.children[index] = tableWrapper;
             }
           }
@@ -108,10 +121,10 @@ async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: stri
   const htmlContent = `<!DOCTYPE html>
 <html>
 <head>
-  <title>Converted HTML</title>
+<title>Converted HTML</title>
 </head>
 <body>
-  ${String(file)}
+${String(file)}
 </body>
 </html>`;
 
@@ -120,13 +133,13 @@ async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: stri
 
 const args = process.argv.slice(2);
 if (args.length !== 1) {
-  console.error("Usage: foo <input-markdown-file>");
+  console.error("Usage: md2drupal <input-markdown-file>");
   process.exit(1);
 }
 
 const inputFilePath = args[0];
 const outputDir = path.dirname(inputFilePath);
-const outputFilePath = path.join(outputDir, path.basename(inputFilePath, path.extname(inputFilePath)) + ".html");
+const outputFilePath = path.join(outputDir, `${path.basename(inputFilePath, path.extname(inputFilePath))}.html`);
 
 convertMarkdownToHTML(inputFilePath, outputFilePath)
   .then(() => {
