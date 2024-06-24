@@ -1,3 +1,4 @@
+// import type { Node } from "mdast";
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import rehypeStringify from "rehype-stringify";
