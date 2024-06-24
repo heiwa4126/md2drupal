@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "ex1": "node dist/index.js testdata/test1.md",
+    "s0": "node dist/s0.js testdata/test1.md",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,10 +19,11 @@
     "typescript": "^5.5.2"
   },
   "dependencies": {
-    "@mdx-js/mdx": "^3.0.1",
     "rehype-stringify": "^10.0.0",
+    "remark-gfm": "^4.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0",
-    "unified": "^11.0.5"
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0"
   }
 }
