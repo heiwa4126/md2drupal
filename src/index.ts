@@ -1,3 +1,4 @@
+import type { Element } from "hast";
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import rehypeStringify from "rehype-stringify";
@@ -5,17 +6,21 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
+import type { Node } from "unist";
 import { visit } from "unist-util-visit";
 
-type Node = {
+let n: Node;
+let e: Element;
+
+type MyNode = {
   type: string;
   tagName?: string;
   properties?: Record<string, any>;
-  children?: Node[];
+  children?: MyNode[];
   value?: string;
 };
 
-function processImageNode(node: Node): Node {
+function processImageNode(node: MyNode): MyNode {
   const altText = node.properties?.alt || "";
   return {
     type: "element",
@@ -53,8 +58,8 @@ function processImageNode(node: Node): Node {
 }
 
 function customPlugin() {
-  return (tree: Node) => {
-    visit(tree, "element", (node: Node, index: number, parent: Node | null) => {
+  return (tree: MyNode) => {
+    visit(tree, "element", (node: MyNode, index: number, parent: MyNode | null) => {
       // Add IDs to headings
       if (["h1", "h2", "h3", "h4"].includes(node.tagName ?? "") && (node.children?.length || 0) > 0) {
         const textContent = node.children?.map((child) => child.value).join(" ") || "";
@@ -72,7 +77,7 @@ function customPlugin() {
 
       // Custom processing for <table> tags
       else if (node.tagName === "table") {
-        const tableWrapper: Node = {
+        const tableWrapper: MyNode = {
           type: "element",
           tagName: "div",
           properties: { className: "table-layer" },
@@ -103,7 +108,7 @@ function customPlugin() {
     });
 
     // Remove <p> wrapping <div class="img-grid--1">
-    visit(tree, "element", (node: Node, index: number, parent: Node | null) => {
+    visit(tree, "element", (node: MyNode, index: number, parent: MyNode | null) => {
       if (node.tagName === "div" && node.properties?.className === "img-grid--1") {
         if (parent && parent.tagName === "p") {
           parent.tagName = "div";
@@ -118,11 +123,11 @@ async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: stri
   const mdContent = readFileSync(inputFilePath, "utf-8");
 
   const processor = unified()
-    .use(remarkParse)
+    .use(remarkParse) // -> mdast
     .use(remarkGfm) // Add support for GitHub Flavored Markdown (including tables)
-    .use(remarkRehype)
+    .use(remarkRehype) // -> hast
     .use(customPlugin)
-    .use(rehypeStringify);
+    .use(rehypeStringify); // hast -> HTML
 
   const file = await processor.process(mdContent);
   const htmlContent = `<!DOCTYPE html>
