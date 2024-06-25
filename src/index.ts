@@ -158,6 +158,7 @@ function processHeaderNode(node: Element) {
 
 // hast -> hast plugin
 function customPlugin2() {
+  // note: Node -> Parent -> Element
   return (tree: Node) => {
     visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {
       if (["h1", "h2", "h3", "h4"].includes(node.tagName) && node.children.length > 0) {
@@ -176,8 +177,11 @@ function customPlugin2() {
       if (node.tagName === "p" && node.children.length > 0 && node.children[0].type === "element") {
         const child = node.children[0] as Element;
         if (child.tagName === "div" && child.properties.className === "img-grid--1") {
-          node.tagName = "div";
-          node.properties = {};
+          // node.tagName = "div";
+          // node.properties = {};
+          if (parent?.children) {
+            parent.children[index] = child;
+          }
         }
       }
     });
