@@ -6,6 +6,7 @@
   "scripts": {
     "ex1": "node dist/index.js testdata/test1.md",
     "s0": "node dist/s0.js testdata/test1.md",
+    "phi3": "node dist/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog.md",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

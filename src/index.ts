@@ -1,4 +1,3 @@
-// import type { Node } from "mdast";
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import rehypeStringify from "rehype-stringify";
@@ -53,6 +52,68 @@ function processImageNode(node: Node): Node {
   };
 }
 
+function customPlugin() {
+  return (tree: Node) => {
+    visit(tree, "element", (node: Node, index: number, parent: Node | null) => {
+      // Add IDs to headings
+      if (["h1", "h2", "h3", "h4"].includes(node.tagName ?? "") && (node.children?.length || 0) > 0) {
+        const textContent = node.children?.map((child) => child.value).join(" ") || "";
+        const id = encodeURIComponent(textContent.toLowerCase().replace(/\s+/g, "-"));
+        node.properties = { ...node.properties, id };
+      }
+
+      // Process images
+      else if (node.tagName === "img") {
+        const imgWrapper = processImageNode(node);
+        if (parent?.children) {
+          parent.children[index] = imgWrapper;
+        }
+      }
+
+      // Custom processing for <table> tags
+      else if (node.tagName === "table") {
+        const tableWrapper: Node = {
+          type: "element",
+          tagName: "div",
+          properties: { className: "table-layer" },
+          children: [
+            {
+              ...node,
+              properties: {
+                ...node.properties,
+                className: "table-headling-x",
+              },
+            },
+          ],
+        };
+        if (parent?.children) {
+          parent.children[index] = tableWrapper;
+        }
+      }
+
+      // if (node.tagName === "pre" && node.children && node.children[0].tagName === "code") {
+      //   const codeNode = node.children[0];
+      //   const language = codeNode.properties?.className[0].replace("language-", "");
+      //   // Custom processing for code blocks
+      //   codeNode.properties = {
+      //     ...codeNode.properties,
+      //     className: `language-${language}`,
+      //   };
+      // }
+    });
+
+    // Remove <p> wrapping <div class="img-grid--1">
+    visit(tree, "element", (node: Node, index: number, parent: Node | null) => {
+      if (node.tagName === "div" && node.properties?.className === "img-grid--1") {
+        if (parent && parent.tagName === "p") {
+          parent.tagName = "div";
+          parent.properties = {};
+        }
+      }
+    });
+  };
+}
+
 async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: string) {
   const mdContent = readFileSync(inputFilePath, "utf-8");
 
@@ -60,62 +121,7 @@ async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: stri
     .use(remarkParse)
     .use(remarkGfm) // Add support for GitHub Flavored Markdown (including tables)
     .use(remarkRehype)
-    .use(() => {
-      return (tree: Node) => {
-        visit(tree, "element", (node: Node, index: number, parent: Node | null) => {
-          if (node.tagName === "img") {
-            const imgWrapper = processImageNode(node);
-            if (parent?.children) {
-              parent.children[index] = imgWrapper;
-            }
-          }
-        });
-
-        // Remove <p> wrapping <div class="img-grid--1">
-        visit(tree, "element", (node: Node, index: number, parent: Node | null) => {
-          if (node.tagName === "div" && node.properties?.className === "img-grid--1") {
-            if (parent && parent.tagName === "p") {
-              parent.tagName = "div";
-              parent.properties = {};
-            }
-          }
-        });
-
-        // Process table and code blocks
-        visit(tree, "element", (node: Node, index: number, parent: Node | null) => {
-          if (node.tagName === "table") {
-            // Custom processing for <table> tags
-            const tableWrapper: Node = {
-              type: "element",
-              tagName: "div",
-              properties: { className: "table-layer" },
-              children: [
-                {
-                  ...node,
-                  properties: {
-                    ...node.properties,
-                    className: "table-headling-x",
-                  },
-                },
-              ],
-            };
-            if (parent?.children) {
-              parent.children[index] = tableWrapper;
-            }
-          }
-
-          if (node.tagName === "pre" && node.children && node.children[0].tagName === "code") {
-            const codeNode = node.children[0];
-            const language = codeNode.properties?.className[0].replace("language-", "");
-            // Custom processing for code blocks
-            codeNode.properties = {
-              ...codeNode.properties,
-              className: `language-${language}`,
-            };
-          }
-        });
-      };
-    })
+    .use(customPlugin)
     .use(rehypeStringify);
 
   const file = await processor.process(mdContent);
