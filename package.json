@@ -7,6 +7,8 @@
     "ex1": "node dist/index.js testdata/test1.md",
     "s0": "node dist/s0.js testdata/test1.md",
     "phi3": "node dist/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog.md",
+    "phi31": "node dist/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog1.md",
+    "phi32": "node dist/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog2.md",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,13 +18,14 @@
   "packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a",
   "devDependencies": {
     "@biomejs/biome": "1.8.2",
+    "@types/chai": "^4.3.16",
     "@types/hast": "^3.0.4",
-    "@types/jest": "^29.5.12",
-    "@types/mdast": "^4.0.4",
     "@types/minimist": "^1.2.5",
+    "@types/mocha": "^10.0.7",
     "@types/node": "^20.14.8",
     "@types/unist": "^3.0.2",
-    "jest": "^29.7.0",
+    "chai": "^5.1.1",
+    "mocha": "^10.5.1",
     "typescript": "^5.5.2"
   },
   "dependencies": {
