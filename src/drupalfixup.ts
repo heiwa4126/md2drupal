@@ -131,8 +131,6 @@ function drupalFixupPlugin() {
       if (node.tagName === "p" && node.children.length > 0 && node.children[0].type === "element") {
         const child = node.children[0] as Element;
         if (child.tagName === "div" && child.properties.className === "img-grid--1") {
-          // node.tagName = "div";
-          // node.properties = {};
           if (parent?.children) {
             parent.children[index] = child;
           }

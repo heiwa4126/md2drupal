@@ -6,6 +6,11 @@ import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 import drupalFixupPlugin from "./drupalfixup.js";
 
+/**
+ * Converts a Markdown file to HTML and writes the output to a file.
+ * @param inputFilePath - The path to the input Markdown file.
+ * @param outputFilePath - The path to the output HTML file.
+ */
 async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: string) {
   const mdContent = readFileSync(inputFilePath, "utf-8");
 
