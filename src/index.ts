@@ -1,4 +1,4 @@
-import type { Element } from "hast";
+import type { Element, Parent } from "hast";
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import rehypeStringify from "rehype-stringify";
@@ -54,6 +54,34 @@ function processImageNode(node: MyNode): MyNode {
         ],
       },
     ],
+  };
+}
+
+// hast -> hast plugin
+function customPlugin2() {
+  return (tree: Node) => {
+    visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {
+      // Custom processing for <table> tags
+      if (node.tagName === "table") {
+        const tableWrapper: Element = {
+          type: "element",
+          tagName: "div",
+          properties: { className: "table-layer" },
+          children: [
+            {
+              ...node,
+              properties: {
+                ...node.properties,
+                className: "table-headling-x",
+              },
+            },
+          ],
+        };
+        if (parent?.children) {
+          parent.children[index] = tableWrapper;
+        }
+      }
+    });
   };
 }
 
@@ -126,7 +154,7 @@ async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: stri
     .use(remarkParse) // -> mdast
     .use(remarkGfm) // Add support for GitHub Flavored Markdown (including tables)
     .use(remarkRehype) // -> hast
-    .use(customPlugin)
+    .use(customPlugin2)
     .use(rehypeStringify); // hast -> HTML
 
   const file = await processor.process(mdContent);
