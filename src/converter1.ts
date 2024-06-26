@@ -11,18 +11,21 @@ import drupalFixupPlugin from "./drupalfixup.js";
  * @param inputFilePath - The path to the input Markdown file.
  * @param outputFilePath - The path to the output HTML file.
  */
-async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: string) {
-  const mdContent = readFileSync(inputFilePath, "utf-8");
+async function convertMarkdownToHTML(
+	inputFilePath: string,
+	outputFilePath: string,
+) {
+	const mdContent = readFileSync(inputFilePath, "utf-8");
 
-  const processor = unified()
-    .use(remarkParse) // -> mdast
-    .use(remarkGfm) // Add support for GitHub Flavored Markdown (including tables)
-    .use(remarkRehype) // -> hast
-    .use(drupalFixupPlugin)
-    .use(rehypeStringify); // hast -> HTML
+	const processor = unified()
+		.use(remarkParse) // -> mdast
+		.use(remarkGfm) // Add support for GitHub Flavored Markdown (including tables)
+		.use(remarkRehype) // -> hast
+		.use(drupalFixupPlugin)
+		.use(rehypeStringify); // hast -> HTML
 
-  const file = await processor.process(mdContent);
-  const htmlContent = `<!DOCTYPE html>
+	const file = await processor.process(mdContent);
+	const htmlContent = `<!DOCTYPE html>
 <html>
 <head>
 <title>Converted HTML</title>
@@ -32,7 +35,7 @@ ${String(file)}
 </body>
 </html>`;
 
-  writeFileSync(outputFilePath, htmlContent);
+	writeFileSync(outputFilePath, htmlContent);
 }
 
 export default convertMarkdownToHTML;

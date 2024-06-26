@@ -9,8 +9,8 @@
     "phi3": "node dist/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog.md",
     "phi31": "node dist/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog1.md",
     "phi32": "node dist/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog2.md",
-    "lint": "biome lint --write ./src",  
-    "format": "biome format --write ./src",
+    "lint": "biome lint ./src",
+    "format": "biome format ./src--write",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
