@@ -9,23 +9,23 @@ import { visit } from "unist-util-visit";
  * @param parent - The parent node of the table node.
  */
 function processTableNode(node: Element, index: number, parent: Parent | null) {
-  const tableWrapper: Element = {
-    type: "element",
-    tagName: "div",
-    properties: { className: "table-layer" },
-    children: [
-      {
-        ...node,
-        properties: {
-          ...node.properties,
-          className: "table-headling-x",
-        },
-      },
-    ],
-  };
-  if (parent?.children) {
-    parent.children[index] = tableWrapper;
-  }
+	const tableWrapper: Element = {
+		type: "element",
+		tagName: "div",
+		properties: { className: "table-layer" },
+		children: [
+			{
+				...node,
+				properties: {
+					...node.properties,
+					className: "table-headling-x",
+				},
+			},
+		],
+	};
+	if (parent?.children) {
+		parent.children[index] = tableWrapper;
+	}
 }
 
 /**
@@ -35,44 +35,44 @@ function processTableNode(node: Element, index: number, parent: Parent | null) {
  * @param parent - The parent node of the image node.
  */
 function processImageNode(node: Element, index: number, parent: Parent | null) {
-  const altText = node.properties?.alt || "";
-  const imgWrapper: Element = {
-    type: "element",
-    tagName: "div",
-    properties: { className: "img-grid--1" },
-    children: [
-      {
-        type: "element",
-        tagName: "div",
-        properties: { className: "lb-gallery" },
-        children: [
-          {
-            type: "element",
-            tagName: "drupal-entity",
-            properties: {
-              alt: altText,
-              title: altText,
-              "data-entity-type": "media",
-              "data-entity-uuid": "11111111-2222-3333-4444-555555555555",
-              "data-embed-button": "media_browser",
-              "data-entity-embed-display": "media_image",
-              "data-entity-embed-display-settings": JSON.stringify({
-                image_style: "crop_freeform",
-                image_link: "",
-                image_loading: { attribute: "lazy" },
-                svg_render_as_image: true,
-                svg_attributes: { width: "", height: "" },
-              }),
-            },
-            children: [],
-          },
-        ],
-      },
-    ],
-  };
-  if (parent?.children) {
-    parent.children[index] = imgWrapper;
-  }
+	const altText = node.properties?.alt || "";
+	const imgWrapper: Element = {
+		type: "element",
+		tagName: "div",
+		properties: { className: "img-grid--1" },
+		children: [
+			{
+				type: "element",
+				tagName: "div",
+				properties: { className: "lb-gallery" },
+				children: [
+					{
+						type: "element",
+						tagName: "drupal-entity",
+						properties: {
+							alt: altText,
+							title: altText,
+							"data-entity-type": "media",
+							"data-entity-uuid": "11111111-2222-3333-4444-555555555555",
+							"data-embed-button": "media_browser",
+							"data-entity-embed-display": "media_image",
+							"data-entity-embed-display-settings": JSON.stringify({
+								image_style: "crop_freeform",
+								image_link: "",
+								image_loading: { attribute: "lazy" },
+								svg_render_as_image: true,
+								svg_attributes: { width: "", height: "" },
+							}),
+						},
+						children: [],
+					},
+				],
+			},
+		],
+	};
+	if (parent?.children) {
+		parent.children[index] = imgWrapper;
+	}
 }
 
 /**
@@ -82,13 +82,13 @@ function processImageNode(node: Element, index: number, parent: Parent | null) {
  * @returns The text content of the element.
  */
 function getTextFromElement(element: Element): string {
-  let text = "";
+	let text = "";
 
-  visit(element, "text", (node) => {
-    text += node.value;
-  });
+	visit(element, "text", (node) => {
+		text += node.value;
+	});
 
-  return text;
+	return text;
 }
 
 /**
@@ -96,9 +96,9 @@ function getTextFromElement(element: Element): string {
  * @param node - The header node to process.
  */
 function processHeaderNode(node: Element) {
-  const textContent = getTextFromElement(node);
-  const id = encodeURIComponent(textContent.toLowerCase().replace(/\s+/g, "-"));
-  node.properties = { ...node.properties, id };
+	const textContent = getTextFromElement(node);
+	const id = encodeURIComponent(textContent.toLowerCase().replace(/\s+/g, "-"));
+	node.properties = { ...node.properties, id };
 }
 
 /**
@@ -110,34 +110,52 @@ function processHeaderNode(node: Element) {
  * @returns A function that performs the custom processing on the tree.
  */
 function drupalFixupPlugin() {
-  // note:
-  //   hast -> hast plugin
-  //   Element -> Parent -> Node
-  return (tree: Node) => {
-    visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {
-      if (["h1", "h2", "h3", "h4"].includes(node.tagName) && node.children.length > 0) {
-        // Add IDs to headings
-        processHeaderNode(node);
-      } else if (node.tagName === "table") {
-        // Custom processing for <table> tags
-        processTableNode(node, index, parent);
-      } else if (node.tagName === "img") {
-        processImageNode(node, index, parent);
-      }
-    });
+	// note:
+	//   hast -> hast plugin
+	//   Element -> Parent -> Node
+	return (tree: Node) => {
+		visit(
+			tree,
+			"element",
+			(node: Element, index: number, parent: Parent | null) => {
+				if (
+					["h1", "h2", "h3", "h4"].includes(node.tagName) &&
+					node.children.length > 0
+				) {
+					// Add IDs to headings
+					processHeaderNode(node);
+				} else if (node.tagName === "table") {
+					// Custom processing for <table> tags
+					processTableNode(node, index, parent);
+				} else if (node.tagName === "img") {
+					processImageNode(node, index, parent);
+				}
+			},
+		);
 
-    // Remove <p> wrapping <div class="img-grid--1">
-    visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {
-      if (node.tagName === "p" && node.children.length > 0 && node.children[0].type === "element") {
-        const child = node.children[0] as Element;
-        if (child.tagName === "div" && child.properties.className === "img-grid--1") {
-          if (parent?.children) {
-            parent.children[index] = child;
-          }
-        }
-      }
-    });
-  };
+		// Remove <p> wrapping <div class="img-grid--1">
+		visit(
+			tree,
+			"element",
+			(node: Element, index: number, parent: Parent | null) => {
+				if (
+					node.tagName === "p" &&
+					node.children.length > 0 &&
+					node.children[0].type === "element"
+				) {
+					const child = node.children[0] as Element;
+					if (
+						child.tagName === "div" &&
+						child.properties.className === "img-grid--1"
+					) {
+						if (parent?.children) {
+							parent.children[index] = child;
+						}
+					}
+				}
+			},
+		);
+	};
 }
 
 export default drupalFixupPlugin;
