@@ -33,7 +33,7 @@ pnpm test # TODO:testまだ書いてないです
 pnpm run pack
 # バージョニング
 git add --all && git commit -am '...'
-pnpm verson patch
+pnpm version patch
 git push && git push --tags
 # npmjs.com に発行
 npm run build && npm publish --access=public
