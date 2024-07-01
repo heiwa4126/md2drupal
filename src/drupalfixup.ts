@@ -129,6 +129,11 @@ function drupalFixupPlugin() {
 					processTableNode(node, index, parent);
 				} else if (node.tagName === "img") {
 					processImageNode(node, index, parent);
+				} else if (
+					node.tagName === "code" &&
+					node.children[0].type === "text"
+				) {
+					node.children[0].value = node.children[0].value.trim();
 				}
 			},
 		);
