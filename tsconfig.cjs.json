@@ -3,7 +3,8 @@
 	"compilerOptions": {
 		"module": "CommonJS",
 		"outDir": "./dist/cjs",
-		"declaration": false
+		"declaration": false,
+		"esModuleInterop": true
 	},
 	"exclude": ["dist", "node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
 }
