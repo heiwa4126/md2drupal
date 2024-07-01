@@ -1,11 +1,11 @@
 {
-	"extends": "./tsconfig.base.json",
-	"compilerOptions": {
-		"module": "ESNext",
-		"outDir": "./dist/esm",
-		"sourceMap": false,
-		"declaration": true,
-		"allowSyntheticDefaultImports": true
-	},
-	"exclude": ["dist", "node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "outDir": "./dist/esm",
+    "sourceMap": false,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true // for minimist
+  },
+  "exclude": ["dist", "node_modules", "src/**/*.test.ts", "src/**/*.test.tsx"]
 }

@@ -1,7 +1,7 @@
 {
 	"name": "md2drupal",
 	"version": "1.0.0",
-	"type": "commonjs",
+	"type": "module",
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
 	"types": "./dist/esm/index.d.ts",
@@ -22,24 +22,30 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
 		"build:cjs": "rm -rf dist/cjs && tsc -p tsconfig.cjs.json",
-		"build": "npm run build:esm && npm run build:cjs",
-		"pack": "npm run format && npm run build && npm pack && mv *.tgz ../"
+		"build": "pnpm run build:esm && pnpm run build:cjs",
+		"pack": "pnpm run format && pnpm run build && pnpm pack && mv *.tgz ../"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"description": "",
+	"files": [
+		"package.json",
+		"README.md",
+		"LICENSE",
+		"dist/esm",
+		"dist/cjs",
+		"!**/__tests__",
+		"!**/*.test.*",
+		"!**/*.js.map"
+	],
 	"packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a",
 	"devDependencies": {
 		"@biomejs/biome": "1.8.2",
-		"@types/chai": "^4.3.16",
 		"@types/hast": "^3.0.4",
 		"@types/minimist": "^1.2.5",
-		"@types/mocha": "^10.0.7",
 		"@types/node": "^20.14.8",
 		"@types/unist": "^3.0.2",
-		"chai": "^5.1.1",
-		"mocha": "^10.5.1",
 		"typescript": "^5.5.2"
 	},
 	"dependencies": {
@@ -49,8 +55,6 @@
 		"remark-parse": "^11.0.0",
 		"remark-rehype": "^11.1.0",
 		"unified": "^11.0.5",
-		"unified-stream": "^3.0.0",
-		"unist-util-visit": "^5.0.0",
-		"vfile": "^6.0.1"
+		"unist-util-visit": "^5.0.0"
 	}
 }
