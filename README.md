@@ -1,5 +1,10 @@
 # md2drupal (@heiwa4126/md2drupal)
 
+[![NPM - Version](https://img.shields.io/npm/v/%40heiwa4126/md2drupal)
+![NPM Type Definitions](https://img.shields.io/npm/types/%40heiwa4126%2Fmd2drupal)
+![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/%40heiwa4126%2Fmd2drupal)
+](https://www.npmjs.com/package/%40heiwa4126/md2drupal)
+
 Markdown から ある特殊な Drupal 入力用の HTML に変換するツール
 
 [Unified](https://github.com/unifiedjs/unified) と TypeScript のパッケージングの練習でもある。
@@ -7,7 +12,7 @@ Markdown から ある特殊な Drupal 入力用の HTML に変換するツー�
 ## install
 
 ```sh
-npm install @heiwa4126/md2drupal
+npm install -g @heiwa4126/md2drupal
 md2drupal --help
 ```
 
