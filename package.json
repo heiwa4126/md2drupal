@@ -1,12 +1,12 @@
 {
-	"name": "md2drupal",
-	"version": "1.0.0",
+	"name": "@heiwa4126/md2drupal",
+	"version": "0.0.0",
 	"type": "module",
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
 	"types": "./dist/esm/index.d.ts",
 	"bin": {
-		"hello-ts": "dist/cjs/cli.js"
+		"md2drupal": "dist/esm/index.js"
 	},
 
 	"scripts": {
@@ -26,8 +26,15 @@
 		"pack": "pnpm run format && pnpm run build && pnpm pack && mv *.tgz ../"
 	},
 	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/heiwa4126/hello-ts.git"
+	},
+	"bugs": {
+		"url": "https://github.com/heiwa4126/hello-ts/issues"
+	},
+	"homepage": "https://github.com/heiwa4126/hello-ts#readme",
+	"license": "MIT",
 	"description": "",
 	"files": [
 		"package.json",

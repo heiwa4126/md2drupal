@@ -26,9 +26,6 @@ importers:
       unified:
         specifier: ^11.0.5
         version: 11.0.5
-      unified-stream:
-        specifier: ^3.0.0
-        version: 3.0.0
       unist-util-visit:
         specifier: ^5.0.0
         version: 5.0.0
@@ -379,9 +376,6 @@ packages:
 
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
-
-  unified-stream@3.0.0:
-    resolution: {integrity: sha512-xUSj9ECxGrG1IAAzIuOY5fA4NzY7D5j/2dMDrHgQoPm1Y7fdt+qHS0++RjVPYHaJz9pd1Od8vBRHL5yRV1K2cQ==}
 
   unified@11.0.5:
     resolution: {integrity: sha512-xKvGhPWw3k84Qjh8bI3ZeJjqnyadK+GEFtazSfZv/rKeTkTjOJho6mFqh2SM96iIcZokxiOpg78GazTSg8+KHA==}
@@ -953,11 +947,6 @@ snapshots:
   typescript@5.5.2: {}
 
   undici-types@5.26.5: {}
-
-  unified-stream@3.0.0:
-    dependencies:
-      unified: 11.0.5
-      vfile: 6.0.1
 
   unified@11.0.5:
     dependencies:
