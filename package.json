@@ -1,6 +1,6 @@
 {
 	"name": "@heiwa4126/md2drupal",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"type": "module",
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
@@ -8,7 +8,6 @@
 	"bin": {
 		"md2drupal": "dist/esm/index.js"
 	},
-
 	"scripts": {
 		"ex1": "node dist/dev/index.js testdata/test1.md",
 		"s0": "node dist/dev/s0.js testdata/test1.md",
