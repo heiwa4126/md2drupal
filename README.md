@@ -5,7 +5,7 @@
 ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/%40heiwa4126%2Fmd2drupal)
 ](https://www.npmjs.com/package/%40heiwa4126/md2drupal)
 
-Markdown から ある特殊な Drupal 入力用の HTML に変換するツール
+Markdown から ある特殊な Drupal 入力用の HTML に変換するツール。
 
 [Unified](https://github.com/unifiedjs/unified) と TypeScript のパッケージングの練習でもある。
 
