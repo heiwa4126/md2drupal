@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import parseCommandline from "./args.js";
 import convertMarkdownToHTML from "./converter1.js";
 
