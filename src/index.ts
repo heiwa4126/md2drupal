@@ -10,3 +10,5 @@ convertMarkdownToHTML(args.inputFilePath, args.outputFilePath)
 	.catch((error) => {
 		console.error("Error during conversion:", error);
 	});
+
+export default convertMarkdownToHTML;

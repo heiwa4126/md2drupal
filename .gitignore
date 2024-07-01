@@ -234,3 +234,5 @@ tags
 
 testdata/**/*.html
 testdata/**/*.htm
+tmp/*
+*.tmp
