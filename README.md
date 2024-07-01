@@ -13,7 +13,7 @@ md2drupal --help
 
 ## usage
 
-```shell
+```bash
 md2drupal <変換元のmarkdownファイル>
 ```
 
@@ -36,5 +36,5 @@ git add --all && git commit -am '...'
 pnpm version patch
 git push && git push --tags
 # npmjs.com に発行
-npm run build && npm publish --access=public
+pnpm run build && pnpm publish --access=public
 ```
