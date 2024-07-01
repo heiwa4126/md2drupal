@@ -27,12 +27,12 @@
 	"keywords": [],
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/heiwa4126/hello-ts.git"
+		"url": "git+https://github.com/heiwa4126/md2drupal.git"
 	},
 	"bugs": {
-		"url": "https://github.com/heiwa4126/hello-ts/issues"
+		"url": "https://github.com/heiwa4126/md2drupal/issues"
 	},
-	"homepage": "https://github.com/heiwa4126/hello-ts#readme",
+	"homepage": "https://github.com/heiwa4126/md2drupal#readme",
 	"license": "MIT",
 	"description": "",
 	"files": [
