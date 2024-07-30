@@ -64,3 +64,11 @@ print(output[0]["generated_text"])
 # output = pipe(messages, **generation_args)
 # print(output[0]["generated_text"])
 ```
+
+```bash
+ls -la test
+```
+
+```sh
+find .. -type d -name .vscode
+```
