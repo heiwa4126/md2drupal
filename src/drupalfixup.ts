@@ -135,6 +135,14 @@ function drupalFixupPlugin() {
 				) {
 					node.children[0].value = node.children[0].value.trim();
 				}
+
+				if (
+					node.tagName === "code" &&
+					(node.properties?.className === "language-sh" ||
+						node.properties?.className === "language-bash")
+				) {
+					node.properties.className = "language-php";
+				}
 			},
 		);
 
