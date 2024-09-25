@@ -15,10 +15,11 @@
 		"phi31": "node dist/dev/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog1.md",
 		"phi32": "node dist/dev/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog2.md",
 		"blog2": "node dist/dev/index.js ~/works/some-notes2/LLM/aws-bedrock-minimum-example-blog2.md",
+		"cdn": "node dist/dev/index.js ~/works/some-notes2/javascript-cdn-blog.md",
 		"watch": "tsc --watch",
-		"format": "biome format --write .",
-		"lint": "biome lint .",
-		"check": "biome check --write .",
+		"format": "biome format --write . && prettier . --write",
+		"lint": "biome lint . && prettier . --check",
+		"check": "biome check --write . && prettier . --write",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
 		"build:cjs": "rm -rf dist/cjs && tsc -p tsconfig.cjs.json",
@@ -51,19 +52,19 @@
 	],
 	"packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a",
 	"devDependencies": {
-		"@biomejs/biome": "1.8.2",
+		"@biomejs/biome": "1.9.2",
 		"@types/hast": "^3.0.4",
 		"@types/minimist": "^1.2.5",
-		"@types/node": "^20.14.13",
-		"@types/unist": "^3.0.2",
-		"typescript": "^5.5.4"
+		"@types/node": "^22.7.0",
+		"@types/unist": "^3.0.3",
+		"typescript": "^5.6.2"
 	},
 	"dependencies": {
 		"minimist": "^1.2.8",
 		"rehype-stringify": "^10.0.0",
 		"remark-gfm": "^4.0.0",
 		"remark-parse": "^11.0.0",
-		"remark-rehype": "^11.1.0",
+		"remark-rehype": "^11.1.1",
 		"unified": "^11.0.5",
 		"unist-util-visit": "^5.0.0"
 	}

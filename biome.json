@@ -3,6 +3,9 @@
 	"organizeImports": {
 		"enabled": true
 	},
+	"files": {
+		"ignore": ["dist/**/*", "node_modules/**/*"]
+	},
 	"json": {
 		"parser": {
 			"allowComments": true,
@@ -13,11 +16,10 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true
-		},
-		"ignore": ["dist/**/*", "node_modules/**/*"]
+		}
 	},
 	"formatter": {
 		"enabled": true,
-		"ignore": ["dist/**/*", "node_modules/**/*"]
+		"lineWidth": 100
 	}
 }
