@@ -1,0 +1,19 @@
+# Lock files to exclude from Prettier
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Files that Biome supports fully (2024-09)
+*.js
+*.ts
+*.jsx
+*.tsx
+*.json
+*.jsonc
+*.css
+*.graphql
+
+# Optionally include these partially supported file types if necessary
+*.vue
+*.svelte
+*.astro
