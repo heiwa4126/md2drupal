@@ -9,6 +9,8 @@
 		"md2drupal": "dist/esm/index.js"
 	},
 	"scripts": {
+		"format": "biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
+		"check": "biome check --write . && dprint check",
 		"ex1": "node dist/dev/index.js testdata/test1.md",
 		"s0": "node dist/dev/s0.js testdata/test1.md",
 		"phi3": "node dist/dev/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog.md",
@@ -19,10 +21,8 @@
 		"esm": "node dist/dev/index.js ~/works/some-notes2/esm-on-browser-blog.md",
 		"rsbuild": "node dist/dev/index.js ~/works/some-notes2/rsbuild-blog.md",
 		"sso": "node dist/dev/index.js ~/works/some-notes2/IAM-Identity-Center-blog.md",
+		"awsgpu": "node dist/dev/index.js ~/works/some-notes2/aws-gpu-blog.md",
 		"watch": "tsc --watch",
-		"format": "biome format --write . && prettier . --write",
-		"lint": "biome lint . && prettier . --check",
-		"check": "biome check --write . && prettier . --write",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
 		"build:cjs": "rm -rf dist/cjs && tsc -p tsconfig.cjs.json",
@@ -58,9 +58,9 @@
 		"@biomejs/biome": "1.9.2",
 		"@types/hast": "^3.0.4",
 		"@types/minimist": "^1.2.5",
-		"@types/node": "^22.7.4",
+		"@types/node": "^22.10.0",
 		"@types/unist": "^3.0.3",
-		"typescript": "^5.6.2"
+		"typescript": "^5.7.2"
 	},
 	"dependencies": {
 		"minimist": "^1.2.8",
