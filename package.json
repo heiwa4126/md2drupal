@@ -22,6 +22,9 @@
 		"rsbuild": "node dist/dev/index.js ~/works/some-notes2/rsbuild-blog.md",
 		"sso": "node dist/dev/index.js ~/works/some-notes2/IAM-Identity-Center-blog.md",
 		"awsgpu": "node dist/dev/index.js ~/works/some-notes2/aws-gpu-blog.md",
+		"a1": "node dist/dev/index.js ~/works/some-notes2/uv-tips-blog.md",
+		"a2": "node dist/dev/index.js ~/works/some-notes2/aws-slr-blog.md",
+		"a3": "node dist/dev/index.js ~/works/some-notes2/gpt-4o-mini-amazon-nova-lite-blog.md",
 		"watch": "tsc --watch",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
@@ -58,14 +61,14 @@
 		"@biomejs/biome": "1.9.2",
 		"@types/hast": "^3.0.4",
 		"@types/minimist": "^1.2.5",
-		"@types/node": "^22.10.0",
+		"@types/node": "^22.13.10",
 		"@types/unist": "^3.0.3",
-		"typescript": "^5.7.2"
+		"typescript": "^5.8.2"
 	},
 	"dependencies": {
 		"minimist": "^1.2.8",
 		"rehype-stringify": "^10.0.1",
-		"remark-gfm": "^4.0.0",
+		"remark-gfm": "^4.0.1",
 		"remark-parse": "^11.0.0",
 		"remark-rehype": "^11.1.1",
 		"unified": "^11.0.5",
