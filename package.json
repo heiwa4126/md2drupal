@@ -25,6 +25,13 @@
 		"a1": "node dist/dev/index.js ~/works/some-notes2/uv-tips-blog.md",
 		"a2": "node dist/dev/index.js ~/works/some-notes2/aws-slr-blog.md",
 		"a3": "node dist/dev/index.js ~/works/some-notes2/gpt-4o-mini-amazon-nova-lite-blog.md",
+		"a4": "node dist/dev/index.js ~/works/some-notes2/effortless-esm-cdn-importmap.md",
+		"a5": "node dist/dev/index.js ~/works/some-notes2/github-pages-custom-domain-note.md",
+		"a6": "node dist/dev/index.js ~/works/some-notes2/cloudflare-pages-blog.md",
+		"a7": "node dist/dev/index.js ~/works/some-notes2/journalctl-vacuum-blog.md",
+		"a8": "node dist/dev/index.js ~/works/some-notes2/cloudflare-functions-blog.md",
+		"a9": "node dist/dev/index.js ~/works/some-notes2/sms-blog.md",
+		"b1": "node dist/dev/index.js ~/works/some-notes2/emv-contactless-blog.md",
 		"watch": "tsc --watch",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
@@ -58,19 +65,19 @@
 	],
 	"packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a",
 	"devDependencies": {
-		"@biomejs/biome": "1.9.2",
+		"@biomejs/biome": "1.9.4",
 		"@types/hast": "^3.0.4",
 		"@types/minimist": "^1.2.5",
-		"@types/node": "^22.13.10",
+		"@types/node": "^22.15.29",
 		"@types/unist": "^3.0.3",
-		"typescript": "^5.8.2"
+		"typescript": "^5.8.3"
 	},
 	"dependencies": {
 		"minimist": "^1.2.8",
 		"rehype-stringify": "^10.0.1",
 		"remark-gfm": "^4.0.1",
 		"remark-parse": "^11.0.0",
-		"remark-rehype": "^11.1.1",
+		"remark-rehype": "^11.1.2",
 		"unified": "^11.0.5",
 		"unist-util-visit": "^5.0.0"
 	}
