@@ -11,7 +11,10 @@ import drupalFixupPlugin from "./drupalfixup.js";
  * @param inputFilePath - The path to the input Markdown file.
  * @param outputFilePath - The path to the output HTML file.
  */
-async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: string) {
+async function convertMarkdownToHTML(
+	inputFilePath: string,
+	outputFilePath: string,
+) {
 	const mdContent = readFileSync(inputFilePath, "utf-8");
 
 	const processor = unified()
