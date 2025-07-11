@@ -33,6 +33,8 @@
 		"a9": "node dist/dev/index.js ~/works/some-notes2/sms-blog.md",
 		"b1": "node dist/dev/index.js ~/works/some-notes2/emv-contactless-blog.md",
 		"b2": "node dist/dev/index.js ~/works/some-notes2/second-argument-of-annotated-blog.md",
+		"b3": "node dist/dev/index.js ~/works/some-notes2/minimum-mcp-blog.md",
+		"b4": "node dist/dev/index.js ~/works/some-notes2/bound-method-blog.md",
 		"watch": "tsc --watch",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
