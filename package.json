@@ -35,6 +35,8 @@
 		"b2": "node dist/dev/index.js ~/works/some-notes2/second-argument-of-annotated-blog.md",
 		"b3": "node dist/dev/index.js ~/works/some-notes2/minimum-mcp-blog.md",
 		"b4": "node dist/dev/index.js ~/works/some-notes2/bound-method-blog.md",
+		"b5": "node dist/dev/index.js ~/works/some-notes2/langchain-structured-output-blog.md",
+		"b6": "node dist/dev/index.js ~/works/some-notes2/ai-agent-101-blog.md",
 		"watch": "tsc --watch",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
@@ -69,7 +71,7 @@
 	"devDependencies": {
 		"@types/hast": "^3.0.4",
 		"@types/minimist": "^1.2.5",
-		"@types/node": "^24.0.13",
+		"@types/node": "^24.1.0",
 		"@types/unist": "^3.0.3",
 		"typescript": "^5.8.3"
 	},
