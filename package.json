@@ -37,6 +37,7 @@
 		"b4": "node dist/dev/index.js ~/works/some-notes2/bound-method-blog.md",
 		"b5": "node dist/dev/index.js ~/works/some-notes2/langchain-structured-output-blog.md",
 		"b6": "node dist/dev/index.js ~/works/some-notes2/ai-agent-101-blog.md",
+		"b7": "node dist/dev/index.js ~/works/some-notes2/keyless-signing-blog.md",
 		"watch": "tsc --watch",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
