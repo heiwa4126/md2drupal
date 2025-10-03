@@ -9,8 +9,8 @@
 		"md2drupal": "dist/esm/index.js"
 	},
 	"scripts": {
-		"format": "biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
-		"check": "biome check --write . && dprint check",
+		"format": "biome format --config-path $HOME/biome.json --write . && dprint fmt && textlint --fix \"**/*.md\"",
+		"check": "biome check --config-path $HOME/biome.json --write . && dprint check",
 		"ex1": "node dist/dev/index.js testdata/test1.md",
 		"s0": "node dist/dev/s0.js testdata/test1.md",
 		"phi3": "node dist/dev/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog.md",
@@ -38,7 +38,10 @@
 		"b5": "node dist/dev/index.js ~/works/some-notes2/langchain-structured-output-blog.md",
 		"b6": "node dist/dev/index.js ~/works/some-notes2/ai-agent-101-blog.md",
 		"b7": "node dist/dev/index.js ~/works/some-notes2/keyless-signing-blog.md",
-    "b8": "node dist/dev/index.js ~/works/some-notes2/postgres-nondeterministic-icu-collation-like-blog.md",
+		"b8": "node dist/dev/index.js ~/works/some-notes2/postgres-nondeterministic-icu-collation-like-blog.md",
+		"s1": "node dist/dev/index.js ~/works/some-notes2/sigstore-part1a-blog.md",
+		"s2": "node dist/dev/index.js ~/works/some-notes2/sigstore-part2a-blog.md",
+		"s3": "node dist/dev/index.js ~/works/some-notes2/sigstore-part3a-blog.md",
 		"watch": "tsc --watch",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
@@ -73,9 +76,9 @@
 	"devDependencies": {
 		"@types/hast": "^3.0.4",
 		"@types/minimist": "^1.2.5",
-		"@types/node": "^24.2.0",
+		"@types/node": "^24.6.2",
 		"@types/unist": "^3.0.3",
-		"typescript": "^5.9.2"
+		"typescript": "^5.9.3"
 	},
 	"dependencies": {
 		"minimist": "^1.2.8",
