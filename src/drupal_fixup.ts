@@ -93,17 +93,19 @@ function getTextFromElement(element: Element): string {
 
 /**
  * Processes a header node by generating an ID based on its text content and updating the node properties.
+ * The ID is URL-encoded to match the href values in links, enabling simple string comparison.
  * @param node - The header node to process.
  */
 function processHeaderNode(node: Element) {
 	const textContent = getTextFromElement(node);
-	// GitHub-style slugification: remove special characters, lowercase, replace spaces with hyphens
-	const id = textContent
+	// URL-encode the slugified text to match remark's link generation
+	const slug = textContent
 		.toLowerCase()
 		.replace(/[^\w\s\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uAC00-\uD7AF-]/g, "") // Keep alphanumeric, whitespace, and CJK characters
 		.replace(/\s+/g, "-") // Replace spaces with hyphens
 		.replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
 		.replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
+	const id = encodeURIComponent(slug);
 	node.properties = { ...node.properties, id };
 }
 
@@ -139,10 +141,12 @@ function drupalFixupPlugin() {
 			if (
 				node.tagName === "code" &&
 				node.properties &&
-				(node.properties.className === "language-sh" ||
-					node.properties.className === "language-bash")
+				node.properties.className &&
+				Array.isArray(node.properties.className) &&
+				(node.properties.className.includes("language-sh") ||
+					node.properties.className.includes("language-bash"))
 			) {
-				node.properties.className = "language-php";
+				node.properties.className = ["language-php"];
 			}
 		});
 

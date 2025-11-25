@@ -18,14 +18,14 @@
 		"lint": "biome lint .",
 		"format": "biome format --write .",
 		"format:full": "pnpm pkg fix && biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
-		"smoke-test": "node examples/ex1.mjs && node examples/ex2.cjs && tsx examples/ex3.ts && node dist/main.js",
+		"esm-smoke1": "node dist/index.js -h",
+		"cjs-smoke1": "node dist/index.cjs -h",
+		"smoke-test": "pnpm run esm-smoke1 && pnpm run cjs-smoke1",
 		"prepack": "clean-publish-scripts -c",
 		"postpack": "clean-publish-scripts -r",
-
 		"trivy-check": "trivy config . && trivy fs .",
 		"trivy-license": "trivy fs --scanners license --severity HIGH,CRITICAL .",
 		"trivy-sbom": "trivy fs --format spdx-json --output project-sbom.json .",
-
 		"ex1": "node dist/index.js testdata/test1.md",
 		"ex2": "node dist/index.js testdata/test2.md",
 		"phi3": "node dist/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog.md",
@@ -70,14 +70,10 @@
 	"license": "MIT",
 	"description": "",
 	"files": [
-		"package.json",
-		"README.md",
-		"LICENSE",
-		"dist/esm",
-		"dist/cjs",
-		"!**/__tests__",
-		"!**/*.test.*",
-		"!**/*.js.map"
+		"dist/**/*.js",
+		"dist/**/*.cjs",
+		"dist/**/*.d.ts",
+		"!dist/**/*.map"
 	],
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.7",
