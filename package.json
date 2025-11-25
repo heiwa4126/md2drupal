@@ -42,6 +42,7 @@
 		"s1": "node dist/dev/index.js ~/works/some-notes2/sigstore-part1a-blog.md",
 		"s2": "node dist/dev/index.js ~/works/some-notes2/sigstore-part2a-blog.md",
 		"s3": "node dist/dev/index.js ~/works/some-notes2/sigstore-part3a-blog.md",
+		"q1": "node dist/dev/index.js /home/heiwa/works/docs/amazon-q-dev-docs/main.md",
 		"watch": "tsc --watch",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
@@ -76,7 +77,7 @@
 	"devDependencies": {
 		"@types/hast": "^3.0.4",
 		"@types/minimist": "^1.2.5",
-		"@types/node": "^24.6.2",
+		"@types/node": "^24.10.1",
 		"@types/unist": "^3.0.3",
 		"typescript": "^5.9.3"
 	},
