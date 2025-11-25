@@ -93,11 +93,19 @@ function getTextFromElement(element: Element): string {
 
 /**
  * Processes a header node by generating an ID based on its text content and updating the node properties.
+ * The ID is URL-encoded to match the href values in links, enabling simple string comparison.
  * @param node - The header node to process.
  */
 function processHeaderNode(node: Element) {
 	const textContent = getTextFromElement(node);
-	const id = encodeURIComponent(textContent.toLowerCase().replace(/\s+/g, "-"));
+	// URL-encode the slugified text to match remark's link generation
+	const slug = textContent
+		.toLowerCase()
+		.replace(/[^\w\s\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uAC00-\uD7AF-]/g, "") // Keep alphanumeric, whitespace, and CJK characters
+		.replace(/\s+/g, "-") // Replace spaces with hyphens
+		.replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+		.replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
+	const id = encodeURIComponent(slug);
 	node.properties = { ...node.properties, id };
 }
 
@@ -109,7 +117,7 @@ function processHeaderNode(node: Element) {
  * @param tree - The Markdown AST tree to process.
  * @returns A function that performs the custom processing on the tree.
  */
-function drupalFixupPlugin() {
+export function drupalFixupPlugin() {
 	// note:
 	//   hast -> hast plugin
 	//   Element -> Parent -> Node
@@ -123,31 +131,42 @@ function drupalFixupPlugin() {
 				processTableNode(node, index, parent);
 			} else if (node.tagName === "img") {
 				processImageNode(node, index, parent);
-			} else if (node.tagName === "code" && node.children[0].type === "text") {
-				node.children[0].value = node.children[0].value.trim();
+			} else if (node.tagName === "code" && node.children.length > 0) {
+				const firstChild = node.children[0];
+				if (firstChild && firstChild.type === "text" && "value" in firstChild) {
+					firstChild.value = firstChild.value.trim();
+				}
 			}
 
 			if (
 				node.tagName === "code" &&
-				(node.properties?.className === "language-sh" ||
-					node.properties?.className === "language-bash")
+				node.properties &&
+				node.properties.className &&
+				Array.isArray(node.properties.className) &&
+				(node.properties.className.includes("language-sh") ||
+					node.properties.className.includes("language-bash"))
 			) {
-				node.properties.className = "language-php";
+				node.properties.className = ["language-php"];
 			}
 		});
 
 		// Remove <p> wrapping <div class="img-grid--1">
 		visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {
-			if (node.tagName === "p" && node.children.length > 0 && node.children[0].type === "element") {
-				const child = node.children[0] as Element;
-				if (child.tagName === "div" && child.properties.className === "img-grid--1") {
-					if (parent?.children) {
-						parent.children[index] = child;
+			if (node.tagName === "p" && node.children.length > 0) {
+				const firstChild = node.children[0];
+				if (firstChild && firstChild.type === "element") {
+					const child = firstChild as Element;
+					if (
+						child.tagName === "div" &&
+						child.properties &&
+						child.properties.className === "img-grid--1"
+					) {
+						if (parent?.children) {
+							parent.children[index] = child;
+						}
 					}
 				}
 			}
 		});
 	};
 }
-
-export default drupalFixupPlugin;
