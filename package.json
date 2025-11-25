@@ -2,9 +2,9 @@
 	"name": "@heiwa4126/md2drupal",
 	"version": "0.0.5-alpha1",
 	"type": "module",
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
+	"main": "./dist/converter1.js",
+	"module": "./dist/converter1.js",
+	"types": "./dist/converter1.d.ts",
 	"bin": {
 		"md2drupal": "dist/index.js"
 	},
