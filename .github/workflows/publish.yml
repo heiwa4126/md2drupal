@@ -1,0 +1,89 @@
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      # 通常リリース: 例) v1.2.3
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      # プリリリースのみ: 例) v1.2.3-rc.1, v1.2.3-beta など(必ず '-' が付く)
+      - "v[0-9]+.[0-9]+.[0-9]+-*"
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    # Only run if pushed by repository owner
+    if: github.repository_owner == github.actor
+    runs-on: ubuntu-latest
+    environment: npmjs
+    permissions:
+      contents: read
+      id-token: write # OIDC に必須
+    steps:
+      - name: Checkout
+        uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+          token: "" # .npmrc へ token を書かせない(OIDC を確実に使う)
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+        with:
+          version: latest
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_ENV"
+
+      - name: Setup pnpm cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Use latest npm supporting OIDC provenance
+        run: npm i -g npm@latest # npm を 11.5.1+ に（publish用）
+
+      - name: Install dependencies (pnpm install)
+        run: pnpm install --frozen-lockfile
+
+      # - run: npm run build --if-present
+      # - run: npm test
+      ## このプロジェクトでは prepublishOnly に書いてあるので不要
+
+      - name: Check if prerelease version
+        id: check-prerelease
+        run: |
+          VERSION=$(npm pkg get version --silent | tr -d '"')
+          # ハイフン(SemVerのprerelease区切り)が含まれているかで判定
+          if [[ $VERSION == *-* ]]; then
+            is_prerelease=true;  tag_option="--tag dev"
+          else
+            is_prerelease=false; tag_option=""
+          fi
+          # まとめて GITHUB_OUTPUT に書き出す
+          {
+            echo "is_prerelease=$is_prerelease"
+            echo "tag_option=$tag_option"
+          } >> "$GITHUB_OUTPUT"
+          # ログ用出力
+          echo "Version: $VERSION"
+          echo "Is prerelease: $is_prerelease"
+
+      - name: Publish to npm via OIDC (Trusted publishing)
+        env:
+          NODE_AUTH_TOKEN: "" # 念のため publish 前も空
+        run: npm publish --access public ${{ steps.check-prerelease.outputs.tag_option }}
+        # Trusted publishing を使うと provenance は自動生成されるので --provenance は不要

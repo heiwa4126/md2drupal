@@ -8,20 +8,29 @@ Markdown から、ある特殊な Drupal 入力用の HTML に変換するツー
 
 [Unified](https://github.com/unifiedjs/unified) と TypeScript のパッケージングの練習でもある。
 
-## install
+## Install
 
 ```sh
 npm install -g @heiwa4126/md2drupal
 md2drupal --help
+# or
+npx @heiwa4126/md2drupal --help
 ```
 
-## usage
+## Usage
 
 ```bash
-md2drupal <変換元のmarkdownファイル>
+md2drupal <変換元のmarkdownファイル> [options]
+
+# 例: 同じディレクトリに拡張子.htmlとして変換
+md2drupal input.md
+
+# 出力先を指定
+md2drupal input.md -o output.html
+md2drupal input.md --output /path/to/output.html
 ```
 
-同じディレクトリに拡張子.html として変換する。
+デフォルトでは、入力ファイルと同じディレクトリに拡張子を`.html`に変更したファイル名で出力します。
 
 ## 開発
 
