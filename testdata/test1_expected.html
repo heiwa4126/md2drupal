@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Converted HTML</title>
+</head>
+<body>
+<h1 id="h1">h1</h1>
+<div class="img-grid--1"><div class="lb-gallery"><drupal-entity alt="s1" title="s1" data-entity-type="media" data-entity-uuid="11111111-2222-3333-4444-555555555555" data-embed-button="media_browser" data-entity-embed-display="media_image" data-entity-embed-display-settings="{&#x22;image_style&#x22;:&#x22;crop_freeform&#x22;,&#x22;image_link&#x22;:&#x22;&#x22;,&#x22;image_loading&#x22;:{&#x22;attribute&#x22;:&#x22;lazy&#x22;},&#x22;svg_render_as_image&#x22;:true,&#x22;svg_attributes&#x22;:{&#x22;width&#x22;:&#x22;&#x22;,&#x22;height&#x22;:&#x22;&#x22;}}"></drupal-entity></div></div>
+<h2 id="h2">h2</h2>
+<p>変換後の特徴は以下の通り:</p>
+<div class="table-layer"><table class="table-headling-x">
+<thead>
+<tr>
+<th>特徴</th>
+<th>元のモデル</th>
+<th>量子化モデル</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>メモリとストレージ</td>
+<td>大きい</td>
+<td>✅<strong>小さい</strong></td>
+</tr>
+<tr>
+<td>計算速度</td>
+<td>低速</td>
+<td>✅<strong>高速</strong></td>
+</tr>
+<tr>
+<td>精度とパフォーマンス</td>
+<td>✅<strong>高い</strong></td>
+<td>やや低下</td>
+</tr>
+<tr>
+<td>ハードウェア要件</td>
+<td>GPU 必須</td>
+<td>✅<strong>CPU で十分</strong></td>
+</tr>
+<tr>
+<td>ファインチューニング</td>
+<td>✅<strong>可能</strong></td>
+<td>不可(or 制限多)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="h3">h3</h3>
+<p>テストですよ</p>
+<p>参考: <a href="https://github.com/microsoft/Phi-3CookBook/blob/main/md/02.QuickStart/Huggingface_QuickStart.md">Using Phi-3 in Hugging Face - Phi-3 CookBook</a></p>
+<pre><code class="language-python">from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+
+model_id = "microsoft/Phi-3-mini-4k-instruct"
+device = "cuda"  # or "cpu"
+
+tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True, use_cache=True)
+
+model = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    device_map=device,
+    trust_remote_code=True,
+    use_cache=True,
+    # flash attention がある場合は以下の2行をアンコメント
+    # torch_dtype=torch.float16,
+    # attn_implementation="flash_attention_2",
+)
+
+pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
+
+generation_args = {
+    "max_new_tokens": 512,
+    "return_full_text": False,
+    "do_sample": False,
+    # サンプリング戦略を有効にする場合は以下をアンコメント
+    # "do_sample": True,
+    # "temperature": 0.3,
+}
+
+# --- シンプルな生成
+messages = [{"role": "user", "content": "日本の首都は?"}]
+output = pipe(messages, **generation_args)
+print(output[0]["generated_text"])
+
+# --- チャットをシミュレートする場合
+# messages = [
+#     {"role": "system", "content": "あなたは愉快なAIアシスタントです。親切に答えて下さい"},
+#     {"role": "user", "content": "こんにちはこんにちは!"},
+#     {"role": "assistant", "content": "こんにちは！お元気ですか？今日はどんな一日をしていますか？"},
+#     {"role": "user", "content": "今日も厄介な仕事ばかりさ"},
+# ]
+# output = pipe(messages, **generation_args)
+# print(output[0]["generated_text"])</code></pre>
+<pre><code class="language-php">ls -la test</code></pre>
+<pre><code class="language-php">find .. -type d -name .vscode</code></pre>
+</body>
+</html>
