@@ -97,7 +97,13 @@ function getTextFromElement(element: Element): string {
  */
 function processHeaderNode(node: Element) {
 	const textContent = getTextFromElement(node);
-	const id = encodeURIComponent(textContent.toLowerCase().replace(/\s+/g, "-"));
+	// GitHub-style slugification: remove special characters, lowercase, replace spaces with hyphens
+	const id = textContent
+		.toLowerCase()
+		.replace(/[^\w\s\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uAC00-\uD7AF-]/g, "") // Keep alphanumeric, whitespace, and CJK characters
+		.replace(/\s+/g, "-") // Replace spaces with hyphens
+		.replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+		.replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
 	node.properties = { ...node.properties, id };
 }
 
