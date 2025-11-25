@@ -53,50 +53,61 @@ describe("convertMarkdownToHTML", () => {
 		}
 	});
 
-	test("should convert test1.md to HTML matching test1_expected.html", async () => {
-		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test1.md");
-		const outputFile = path.join(TEST_OUTPUT_DIR, "test1_output.html");
-		const expectedFile = path.join(import.meta.dirname, "..", "testdata", "test1_expected.html");
+	/**
+	 * Helper function to get test file paths
+	 */
+	function getTestFilePaths(testName: string, outputName: string) {
+		return {
+			inputFile: path.join(import.meta.dirname, "..", "testdata", `${testName}.md`),
+			outputFile: path.join(TEST_OUTPUT_DIR, `${outputName}.html`),
+		};
+	}
 
+	/**
+	 * Helper function to convert and read generated HTML
+	 */
+	async function convertAndRead(testName: string, outputName: string): Promise<string> {
+		const { inputFile, outputFile } = getTestFilePaths(testName, outputName);
 		await convertMarkdownToHTML(inputFile, outputFile);
+		return readFileSync(outputFile, "utf-8");
+	}
 
-		const generatedHTML = readFileSync(outputFile, "utf-8");
+	/**
+	 * Helper function to test markdown to HTML conversion against expected output
+	 */
+	async function testConversion(testName: string): Promise<void> {
+		const generatedHTML = await convertAndRead(testName, `${testName}_output`);
+		const expectedFile = path.join(
+			import.meta.dirname,
+			"..",
+			"testdata",
+			`${testName}_expected.html`,
+		);
 		const expectedHTML = readFileSync(expectedFile, "utf-8");
 
 		expect(normalizeHTML(generatedHTML)).toBe(normalizeHTML(expectedHTML));
+	}
+
+	test("should convert test1.md to HTML matching test1_expected.html", async () => {
+		await testConversion("test1");
 	});
 
 	test("should convert test2.md to HTML matching test2_expected.html", async () => {
-		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test2.md");
-		const outputFile = path.join(TEST_OUTPUT_DIR, "test2_output.html");
-		const expectedFile = path.join(import.meta.dirname, "..", "testdata", "test2_expected.html");
-
-		await convertMarkdownToHTML(inputFile, outputFile);
-
-		const generatedHTML = readFileSync(outputFile, "utf-8");
-		const expectedHTML = readFileSync(expectedFile, "utf-8");
-
-		expect(normalizeHTML(generatedHTML)).toBe(normalizeHTML(expectedHTML));
+		await testConversion("test2");
 	});
 
 	test("should create output file if it doesn't exist", async () => {
-		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test1.md");
-		const outputFile = path.join(TEST_OUTPUT_DIR, "new_output.html");
+		const { outputFile } = getTestFilePaths("test1", "new_output");
 
 		expect(existsSync(outputFile)).toBe(false);
 
-		await convertMarkdownToHTML(inputFile, outputFile);
+		await convertAndRead("test1", "new_output");
 
 		expect(existsSync(outputFile)).toBe(true);
 	});
 
 	test("should generate valid HTML with DOCTYPE and basic structure", async () => {
-		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test1.md");
-		const outputFile = path.join(TEST_OUTPUT_DIR, "structure_test.html");
-
-		await convertMarkdownToHTML(inputFile, outputFile);
-
-		const generatedHTML = readFileSync(outputFile, "utf-8");
+		const generatedHTML = await convertAndRead("test1", "structure_test");
 
 		expect(generatedHTML).toContain("<!DOCTYPE html>");
 		expect(generatedHTML).toContain("<html>");
@@ -109,12 +120,7 @@ describe("convertMarkdownToHTML", () => {
 	});
 
 	test("should handle headers with URL-encoded IDs", async () => {
-		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test1.md");
-		const outputFile = path.join(TEST_OUTPUT_DIR, "headers_test.html");
-
-		await convertMarkdownToHTML(inputFile, outputFile);
-
-		const generatedHTML = readFileSync(outputFile, "utf-8");
+		const generatedHTML = await convertAndRead("test1", "headers_test");
 
 		expect(generatedHTML).toContain('id="h1"');
 		expect(generatedHTML).toContain('id="h2"');
@@ -122,24 +128,14 @@ describe("convertMarkdownToHTML", () => {
 	});
 
 	test("should wrap tables in div.table-layer", async () => {
-		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test1.md");
-		const outputFile = path.join(TEST_OUTPUT_DIR, "table_test.html");
-
-		await convertMarkdownToHTML(inputFile, outputFile);
-
-		const generatedHTML = readFileSync(outputFile, "utf-8");
+		const generatedHTML = await convertAndRead("test1", "table_test");
 
 		expect(generatedHTML).toContain('<div class="table-layer">');
 		expect(generatedHTML).toContain('<table class="table-headling-x">');
 	});
 
 	test("should wrap images in Drupal structure", async () => {
-		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test1.md");
-		const outputFile = path.join(TEST_OUTPUT_DIR, "image_test.html");
-
-		await convertMarkdownToHTML(inputFile, outputFile);
-
-		const generatedHTML = readFileSync(outputFile, "utf-8");
+		const generatedHTML = await convertAndRead("test1", "image_test");
 
 		expect(generatedHTML).toContain('<div class="img-grid--1">');
 		expect(generatedHTML).toContain('<div class="lb-gallery">');
@@ -148,12 +144,7 @@ describe("convertMarkdownToHTML", () => {
 	});
 
 	test("should convert bash/sh code blocks to php language class", async () => {
-		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test1.md");
-		const outputFile = path.join(TEST_OUTPUT_DIR, "code_test.html");
-
-		await convertMarkdownToHTML(inputFile, outputFile);
-
-		const generatedHTML = readFileSync(outputFile, "utf-8");
+		const generatedHTML = await convertAndRead("test1", "code_test");
 
 		expect(generatedHTML).toContain('<code class="language-python">');
 		expect(generatedHTML).toContain('<code class="language-php">');
@@ -162,12 +153,7 @@ describe("convertMarkdownToHTML", () => {
 	});
 
 	test("should preserve anchor link consistency (href matches id)", async () => {
-		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test2.md");
-		const outputFile = path.join(TEST_OUTPUT_DIR, "anchor_test.html");
-
-		await convertMarkdownToHTML(inputFile, outputFile);
-
-		const generatedHTML = readFileSync(outputFile, "utf-8");
+		const generatedHTML = await convertAndRead("test2", "anchor_test");
 
 		// Extract all anchor hrefs and header ids
 		const hrefMatches = generatedHTML.matchAll(/href="#([^"]+)"/g);
@@ -183,12 +169,7 @@ describe("convertMarkdownToHTML", () => {
 	});
 
 	test("should handle special characters in headers correctly", async () => {
-		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test2.md");
-		const outputFile = path.join(TEST_OUTPUT_DIR, "special_chars_test.html");
-
-		await convertMarkdownToHTML(inputFile, outputFile);
-
-		const generatedHTML = readFileSync(outputFile, "utf-8");
+		const generatedHTML = await convertAndRead("test2", "special_chars_test");
 
 		// Check URL-encoded IDs for special characters
 		expect(generatedHTML).toContain('id="%E7%9B%AE%E6%AC%A1"'); // 目次
@@ -201,12 +182,7 @@ describe("convertMarkdownToHTML", () => {
 	});
 
 	test("should process GitHub Flavored Markdown (GFM) features", async () => {
-		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test1.md");
-		const outputFile = path.join(TEST_OUTPUT_DIR, "gfm_test.html");
-
-		await convertMarkdownToHTML(inputFile, outputFile);
-
-		const generatedHTML = readFileSync(outputFile, "utf-8");
+		const generatedHTML = await convertAndRead("test1", "gfm_test");
 
 		// GFM tables should be rendered
 		expect(generatedHTML).toContain("<table");
