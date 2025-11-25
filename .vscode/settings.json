@@ -55,5 +55,5 @@
 		"editor.detectIndentation": false,
 		"files.eol": "\n"
 	},
-	"cSpell.words": ["testdata"]
+	"cSpell.words": ["hrefs", "testdata"]
 }
