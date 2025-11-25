@@ -54,5 +54,6 @@
 		"editor.insertSpaces": false,
 		"editor.detectIndentation": false,
 		"files.eol": "\n"
-	}
+	},
+	"cSpell.words": ["testdata"]
 }

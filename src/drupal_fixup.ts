@@ -123,14 +123,18 @@ function drupalFixupPlugin() {
 				processTableNode(node, index, parent);
 			} else if (node.tagName === "img") {
 				processImageNode(node, index, parent);
-			} else if (node.tagName === "code" && node.children[0].type === "text") {
-				node.children[0].value = node.children[0].value.trim();
+			} else if (node.tagName === "code" && node.children.length > 0) {
+				const firstChild = node.children[0];
+				if (firstChild && firstChild.type === "text" && "value" in firstChild) {
+					firstChild.value = firstChild.value.trim();
+				}
 			}
 
 			if (
 				node.tagName === "code" &&
-				(node.properties?.className === "language-sh" ||
-					node.properties?.className === "language-bash")
+				node.properties &&
+				(node.properties.className === "language-sh" ||
+					node.properties.className === "language-bash")
 			) {
 				node.properties.className = "language-php";
 			}
@@ -138,11 +142,18 @@ function drupalFixupPlugin() {
 
 		// Remove <p> wrapping <div class="img-grid--1">
 		visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {
-			if (node.tagName === "p" && node.children.length > 0 && node.children[0].type === "element") {
-				const child = node.children[0] as Element;
-				if (child.tagName === "div" && child.properties.className === "img-grid--1") {
-					if (parent?.children) {
-						parent.children[index] = child;
+			if (node.tagName === "p" && node.children.length > 0) {
+				const firstChild = node.children[0];
+				if (firstChild && firstChild.type === "element") {
+					const child = firstChild as Element;
+					if (
+						child.tagName === "div" &&
+						child.properties &&
+						child.properties.className === "img-grid--1"
+					) {
+						if (parent?.children) {
+							parent.children[index] = child;
+						}
 					}
 				}
 			}
