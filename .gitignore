@@ -232,7 +232,7 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode,emacs,vim
 
-testdata/**/*.html
-testdata/**/*.htm
+# Exclude generated test outputs, but keep golden files
+testdata/output/
 tmp/*
 *.tmp

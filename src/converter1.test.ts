@@ -20,10 +20,10 @@ describe("convertMarkdownToHTML", () => {
 		}
 	});
 
-	test("should convert test1.md to HTML matching test1.html", async () => {
+	test("should convert test1.md to HTML matching test1_expected.html", async () => {
 		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test1.md");
 		const outputFile = path.join(TEST_OUTPUT_DIR, "test1_output.html");
-		const expectedFile = path.join(import.meta.dirname, "..", "testdata", "test1.html");
+		const expectedFile = path.join(import.meta.dirname, "..", "testdata", "test1_expected.html");
 
 		await convertMarkdownToHTML(inputFile, outputFile);
 
@@ -33,10 +33,10 @@ describe("convertMarkdownToHTML", () => {
 		expect(generatedHTML).toBe(expectedHTML);
 	});
 
-	test("should convert test2.md to HTML matching test2.html", async () => {
+	test("should convert test2.md to HTML matching test2_expected.html", async () => {
 		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test2.md");
 		const outputFile = path.join(TEST_OUTPUT_DIR, "test2_output.html");
-		const expectedFile = path.join(import.meta.dirname, "..", "testdata", "test2.html");
+		const expectedFile = path.join(import.meta.dirname, "..", "testdata", "test2_expected.html");
 
 		await convertMarkdownToHTML(inputFile, outputFile);
 
