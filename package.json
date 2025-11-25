@@ -1,6 +1,6 @@
 {
 	"name": "@heiwa4126/md2drupal",
-	"version": "0.0.6-alpha1",
+	"version": "0.0.6-alpha2",
 	"type": "module",
 	"main": "./dist/converter1.js",
 	"module": "./dist/converter1.js",
