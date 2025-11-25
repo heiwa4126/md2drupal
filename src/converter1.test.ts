@@ -75,14 +75,18 @@ describe("convertMarkdownToHTML", () => {
 	/**
 	 * Helper function to test markdown to HTML conversion against expected output
 	 */
-	async function testConversion(testName: string): Promise<void> {
-		const generatedHTML = await convertAndRead(testName, `${testName}_output`);
-		const expectedFile = path.join(
-			import.meta.dirname,
-			"..",
-			"testdata",
-			`${testName}_expected.html`,
-		);
+	async function testConversion(
+		testName: string,
+		options?: { includeCss?: boolean },
+	): Promise<void> {
+		const { inputFile, outputFile } = getTestFilePaths(testName, `${testName}_output`);
+		await convertMarkdownToHTML(inputFile, outputFile, options);
+		const generatedHTML = readFileSync(outputFile, "utf-8");
+
+		const expectedFileName = options?.includeCss
+			? `${testName}_expected_with_css.html`
+			: `${testName}_expected.html`;
+		const expectedFile = path.join(import.meta.dirname, "..", "testdata", expectedFileName);
 		const expectedHTML = readFileSync(expectedFile, "utf-8");
 
 		expect(normalizeHTML(generatedHTML)).toBe(normalizeHTML(expectedHTML));
@@ -94,6 +98,14 @@ describe("convertMarkdownToHTML", () => {
 
 	test("should convert test2.md to HTML matching test2_expected.html", async () => {
 		await testConversion("test2");
+	});
+
+	test("should convert test3.md to HTML matching test3_expected.html", async () => {
+		await testConversion("test3");
+	});
+
+	test("should convert test3.md to HTML with CSS matching test3_expected_with_css.html", async () => {
+		await testConversion("test3", { includeCss: true });
 	});
 
 	test("should create output file if it doesn't exist", async () => {
@@ -212,5 +224,39 @@ describe("convertMarkdownToHTML", () => {
 
 		const html2 = await convertAndRead("test2", "title_test2");
 		expect(html2).toContain("<title>CMS アンカー生成のテストケース</title>");
+	});
+
+	test("should include CSS when includeCss option is true", async () => {
+		const { inputFile, outputFile } = getTestFilePaths("test3", "test3_css");
+		await convertMarkdownToHTML(inputFile, outputFile, { includeCss: true });
+		const generatedHTML = readFileSync(outputFile, "utf-8");
+
+		// Check for CSS link
+		expect(generatedHTML).toContain('<link rel="stylesheet" href="');
+		expect(generatedHTML).toContain(
+			"https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css",
+		);
+
+		// Check for style tag with padding
+		expect(generatedHTML).toContain("<style>body {padding: 1.5em;}</style>");
+
+		// Check for body class
+		expect(generatedHTML).toContain('<body class="markdown-body">');
+	});
+
+	test("should not include CSS when includeCss option is false or undefined", async () => {
+		const { inputFile, outputFile } = getTestFilePaths("test3", "test3_no_css");
+		await convertMarkdownToHTML(inputFile, outputFile);
+		const generatedHTML = readFileSync(outputFile, "utf-8");
+
+		// Should not contain CSS link
+		expect(generatedHTML).not.toContain('<link rel="stylesheet"');
+
+		// Should not contain style tag
+		expect(generatedHTML).not.toContain("<style>");
+
+		// Should not have class on body
+		expect(generatedHTML).toContain("<body>");
+		expect(generatedHTML).not.toContain('<body class="markdown-body">');
 	});
 });
