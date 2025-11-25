@@ -236,3 +236,5 @@ tags
 testdata/output/
 tmp/*
 *.tmp
+
+*.html
