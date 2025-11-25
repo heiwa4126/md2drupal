@@ -24,9 +24,7 @@ program
 				`${path.basename(inputFilePath, path.extname(inputFilePath))}.html`,
 			);
 
-		const convertOptions: ConvertOptions = {
-			includeCss: options.css,
-		};
+		const convertOptions: ConvertOptions = options.css ? { includeCss: true } : {};
 
 		convertMarkdownToHTML(inputFilePath, outputFilePath, convertOptions)
 			.then(() => {
