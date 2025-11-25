@@ -1,9 +1,42 @@
+import { parseHTML } from "linkedom";
 import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { convertMarkdownToHTML } from "./converter1.js";
 
 const TEST_OUTPUT_DIR = path.join(import.meta.dirname, "..", "testdata", "output");
+
+/**
+ * Normalize HTML by parsing and serializing it.
+ * This removes formatting differences like whitespace and indentation.
+ */
+function normalizeHTML(html: string): string {
+	const { document } = parseHTML(html);
+
+	// Helper function to recursively trim text nodes
+	function trimTextNodes(node: Node): void {
+		if (node.nodeType === 3) {
+			// Text node
+			if (node.textContent) {
+				node.textContent = node.textContent.trim();
+			}
+		} else if (node.nodeType === 1) {
+			// Element node
+			for (const child of Array.from(node.childNodes)) {
+				trimTextNodes(child);
+			}
+		}
+	}
+
+	trimTextNodes(document.documentElement);
+
+	// Remove whitespace between tags and normalize remaining whitespace
+	const normalized = document.documentElement.outerHTML
+		.replace(/>\s+</g, "><") // Remove whitespace between tags
+		.replace(/\s+/g, " ") // Normalize all remaining whitespace to single space
+		.trim();
+	return normalized;
+}
 
 describe("convertMarkdownToHTML", () => {
 	beforeEach(() => {
@@ -30,7 +63,7 @@ describe("convertMarkdownToHTML", () => {
 		const generatedHTML = readFileSync(outputFile, "utf-8");
 		const expectedHTML = readFileSync(expectedFile, "utf-8");
 
-		expect(generatedHTML).toBe(expectedHTML);
+		expect(normalizeHTML(generatedHTML)).toBe(normalizeHTML(expectedHTML));
 	});
 
 	test("should convert test2.md to HTML matching test2_expected.html", async () => {
@@ -43,7 +76,7 @@ describe("convertMarkdownToHTML", () => {
 		const generatedHTML = readFileSync(outputFile, "utf-8");
 		const expectedHTML = readFileSync(expectedFile, "utf-8");
 
-		expect(generatedHTML).toBe(expectedHTML);
+		expect(normalizeHTML(generatedHTML)).toBe(normalizeHTML(expectedHTML));
 	});
 
 	test("should create output file if it doesn't exist", async () => {
