@@ -112,7 +112,7 @@ describe("convertMarkdownToHTML", () => {
 		expect(generatedHTML).toContain("<!DOCTYPE html>");
 		expect(generatedHTML).toContain("<html>");
 		expect(generatedHTML).toContain("<head>");
-		expect(generatedHTML).toContain("<title>Converted HTML</title>");
+		expect(generatedHTML).toContain("<title>h1</title>");
 		expect(generatedHTML).toContain("</head>");
 		expect(generatedHTML).toContain("<body>");
 		expect(generatedHTML).toContain("</body>");
@@ -204,5 +204,13 @@ describe("convertMarkdownToHTML", () => {
 
 		const generatedHTML = readFileSync(outputFile, "utf-8");
 		expect(generatedHTML).toContain('<h1 id="h1">h1</h1>');
+	});
+
+	test("should use first heading as title", async () => {
+		const html1 = await convertAndRead("test1", "title_test1");
+		expect(html1).toContain("<title>h1</title>");
+
+		const html2 = await convertAndRead("test2", "title_test2");
+		expect(html2).toContain("<title>CMS アンカー生成のテストケース</title>");
 	});
 });
