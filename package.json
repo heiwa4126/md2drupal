@@ -1,6 +1,6 @@
 {
 	"name": "@heiwa4126/md2drupal",
-	"version": "0.0.4",
+	"version": "0.0.5-alpha1",
 	"type": "module",
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
@@ -9,8 +9,23 @@
 		"md2drupal": "dist/esm/index.js"
 	},
 	"scripts": {
-		"format": "biome format --config-path $HOME/biome.json --write . && dprint fmt && textlint --fix \"**/*.md\"",
-		"check": "biome check --config-path $HOME/biome.json --write . && dprint check",
+		"build": "tsup",
+		"test": "vitest run",
+		"test:run": "vitest run",
+		"test:watch": "vitest",
+		"clean": "rm -rf dist",
+		"prepublishOnly": "pnpm run lint && pnpm run test && pnpm run clean && pnpm run build && pnpm run smoke-test",
+		"lint": "biome lint .",
+		"format": "biome format --write .",
+		"format:full": "pnpm pkg fix && biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
+		"smoke-test": "node examples/ex1.mjs && node examples/ex2.cjs && tsx examples/ex3.ts && node dist/main.js",
+		"prepack": "clean-publish-scripts -c",
+		"postpack": "clean-publish-scripts -r",
+
+		"trivy-check": "trivy config . && trivy fs .",
+		"trivy-license": "trivy fs --scanners license --severity HIGH,CRITICAL .",
+		"trivy-sbom": "trivy fs --format spdx-json --output project-sbom.json .",
+
 		"ex1": "node dist/dev/index.js testdata/test1.md",
 		"s0": "node dist/dev/s0.js testdata/test1.md",
 		"phi3": "node dist/dev/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog.md",
@@ -41,16 +56,7 @@
 		"b8": "node dist/dev/index.js ~/works/some-notes2/postgres-nondeterministic-icu-collation-like-blog.md",
 		"s1": "node dist/dev/index.js ~/works/some-notes2/sigstore-part1a-blog.md",
 		"s2": "node dist/dev/index.js ~/works/some-notes2/sigstore-part2a-blog.md",
-		"s3": "node dist/dev/index.js ~/works/some-notes2/sigstore-part3a-blog.md",
-		"watch": "tsc --watch",
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"build:esm": "rm -rf dist/esm && tsc -p tsconfig.esm.json",
-		"build:cjs": "rm -rf dist/cjs && tsc -p tsconfig.cjs.json",
-		"build": "pnpm run build:esm && pnpm run build:cjs",
-		"pack": "pnpm run format && pnpm run build && pnpm pack && mv *.tgz ../",
-		"trivy-check": "trivy config . && trivy fs .",
-		"trivy-license": "trivy fs --scanners license --severity HIGH,CRITICAL .",
-		"trivy-sbom": "trivy fs --format spdx-json --output project-sbom.json ."
+		"s3": "node dist/dev/index.js ~/works/some-notes2/sigstore-part3a-blog.md"
 	},
 	"keywords": [],
 	"repository": {
@@ -74,11 +80,16 @@
 		"!**/*.js.map"
 	],
 	"devDependencies": {
+		"@biomejs/biome": "^2.3.7",
+		"@heiwa4126/clean-publish-scripts": "^0.0.1",
 		"@types/hast": "^3.0.4",
 		"@types/minimist": "^1.2.5",
-		"@types/node": "^24.6.2",
+		"@types/node": "^24.10.1",
 		"@types/unist": "^3.0.3",
-		"typescript": "^5.9.3"
+		"tsup": "^8.5.1",
+		"tsx": "^4.20.6",
+		"typescript": "^5.9.3",
+		"vitest": "^4.0.13"
 	},
 	"dependencies": {
 		"minimist": "^1.2.8",
@@ -88,5 +99,11 @@
 		"remark-rehype": "^11.1.2",
 		"unified": "^11.0.5",
 		"unist-util-visit": "^5.0.0"
-	}
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"workspaces": [
+		"."
+	]
 }

@@ -4,7 +4,7 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
-import drupalFixupPlugin from "./drupalfixup.js";
+import drupalFixupPlugin from "./drupal_fixup.js";
 
 /**
  * Converts a Markdown file to HTML and writes the output to a file.
