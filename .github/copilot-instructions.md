@@ -26,9 +26,34 @@ The plugin uses `unist-util-visit` to traverse the hast tree and applies:
 - **Code blocks**: Convert `language-sh` and `language-bash` to `language-php` for Drupal's syntax highlighter, trim whitespace from code content
 - **Paragraphs**: Remove `<p>` wrappers around image divs to prevent invalid HTML nesting
 
+### Conversion Options (src/converter1.ts)
+
+The `convertMarkdownToHTML` function accepts an optional `ConvertOptions` parameter:
+
+```typescript
+export interface ConvertOptions {
+  includeCss?: boolean;
+}
+```
+
+- **`includeCss: true`**: Injects GitHub Markdown CSS from CDN for standalone HTML preview
+  - Adds `<link rel="stylesheet" href="${DEFAULT_CSS_URL}">` to `<head>`
+  - Adds `<style>body {padding: ${DEFAULT_PADDING};}</style>` to `<head>`
+  - Adds `class="markdown-body"` to `<body>` tag
+- **`includeCss: false` or undefined (default)**: Generates minimal HTML for Drupal CMS pasting
+
+**Constants**:
+- `DEFAULT_CSS_URL`: GitHub Markdown CSS CDN URL (currently 5.8.1)
+- `DEFAULT_PADDING`: Body padding value (`"1.5em"`)
+
 ### Entry Point (src/index.ts)
 
-CLI using Commander.js. Default behavior: converts `input.md` to `input.html` in the same directory. Shebang `#!/usr/bin/env node` enables direct execution.
+CLI using Commander.js with two options:
+
+- `-o, --output <file>`: Specify output HTML file path
+- `-c, --css`: Enable GitHub Markdown CSS injection for standalone preview
+
+Default behavior: converts `input.md` to `input.html` in the same directory. Shebang `#!/usr/bin/env node` enables direct execution.
 
 ## Build & Distribution
 
@@ -50,6 +75,20 @@ CLI using Commander.js. Default behavior: converts `input.md` to `input.html` in
 ### File-based Integration Tests (src/converter1.test.ts)
 
 Converts testdata/*.md files and compares against golden *.html files. Tests use `import.meta.dirname` for path resolution.
+
+**Test Data**:
+- `test1.md`: Complex document with tables, images, code blocks (Drupal-specific transformations)
+- `test2.md`: Japanese characters and special characters in headers (anchor link consistency)
+- `test3.md`: Simple document with headings, paragraphs, lists
+  - `test3_expected.html`: Default output (no CSS)
+  - `test3_expected_with_css.html`: CSS-enabled output (with GitHub Markdown CSS)
+
+**Helper Functions**:
+- `testConversion(testName, options?)`: Converts markdown and compares with expected HTML
+  - Accepts optional `ConvertOptions` parameter
+  - Selects appropriate expected file based on `options.includeCss`
+- `convertAndRead()`: Converts and returns generated HTML
+- `normalizeHTML()`: Removes whitespace differences for comparison
 
 Setup/teardown:
 
