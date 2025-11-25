@@ -28,11 +28,12 @@ md2drupal <変換元のmarkdownファイル>
 ```sh
 pnpm i
 pnpm run prepublishOnly
-pnpm pack
+
 # バージョニング
 git add --all && git commit -am '...'
 pnpm version patch
 git push --follow-tags
+
 # npmjs.com に発行
-pnpm run build && pnpm publish --access=public
+pnpm publish --access=public
 ```

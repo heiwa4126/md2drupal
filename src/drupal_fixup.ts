@@ -117,7 +117,7 @@ function processHeaderNode(node: Element) {
  * @param tree - The Markdown AST tree to process.
  * @returns A function that performs the custom processing on the tree.
  */
-function drupalFixupPlugin() {
+export function drupalFixupPlugin() {
 	// note:
 	//   hast -> hast plugin
 	//   Element -> Parent -> Node
@@ -170,5 +170,3 @@ function drupalFixupPlugin() {
 		});
 	};
 }
-
-export default drupalFixupPlugin;

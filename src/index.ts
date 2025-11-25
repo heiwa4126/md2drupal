@@ -3,7 +3,7 @@
 import { Command } from "commander";
 import path from "node:path";
 import pkg from "../package.json" with { type: "json" };
-import convertMarkdownToHTML from "./converter1.js";
+import { convertMarkdownToHTML } from "./converter1.js";
 
 const program = new Command();
 

@@ -5,7 +5,7 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 import { describe, expect, it } from "vitest";
-import drupalFixupPlugin from "./drupal_fixup.js";
+import { drupalFixupPlugin } from "./drupal_fixup.js";
 
 describe("drupalFixupPlugin", () => {
 	describe("Header ID generation", () => {

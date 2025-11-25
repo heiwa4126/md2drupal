@@ -1,17 +1,18 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import path from "node:path";
 import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
-import drupalFixupPlugin from "./drupal_fixup.js";
+import { drupalFixupPlugin } from "./drupal_fixup.js";
 
 /**
  * Converts a Markdown file to HTML and writes the output to a file.
  * @param inputFilePath - The path to the input Markdown file.
  * @param outputFilePath - The path to the output HTML file.
  */
-async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: string) {
+export async function convertMarkdownToHTML(inputFilePath: string, outputFilePath: string) {
 	const mdContent = readFileSync(inputFilePath, "utf-8");
 
 	const processor = unified()
@@ -32,7 +33,9 @@ ${String(file)}
 </body>
 </html>`;
 
+	// Create output directory if it doesn't exist
+	const outputDir = path.dirname(outputFilePath);
+	mkdirSync(outputDir, { recursive: true });
+
 	writeFileSync(outputFilePath, htmlContent);
 }
-
-export default convertMarkdownToHTML;
