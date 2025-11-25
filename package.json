@@ -1,6 +1,6 @@
 {
 	"name": "@heiwa4126/md2drupal",
-	"version": "0.0.5-alpha1",
+	"version": "0.0.5-alpha0",
 	"type": "module",
 	"main": "./dist/converter1.js",
 	"module": "./dist/converter1.js",
@@ -15,13 +15,14 @@
 		"test:run": "vitest run",
 		"test:watch": "vitest",
 		"clean": "rm -rf dist",
-		"prepublishOnly": "pnpm run lint && pnpm run test && pnpm run clean && pnpm run build && pnpm run smoke-test",
+		"link-self": "mkdir -p node_modules/@heiwa4126 && rm -f node_modules/@heiwa4126/md2drupal && ln -s \"$PWD\" node_modules/@heiwa4126/md2drupal",
+		"prepublishOnly": "pnpm run lint && pnpm run test && pnpm run clean && pnpm run build && pnpm run link-self && pnpm run smoke-test",
 		"lint": "biome lint .",
 		"format": "biome format --write .",
 		"format:full": "pnpm pkg fix && biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
 		"esm-smoke1": "node dist/index.js -h",
 		"cjs-smoke1": "node dist/index.cjs -V",
-		"smoke-test": "pnpm run esm-smoke1 && pnpm run cjs-smoke1",
+		"smoke-test": "pnpm run esm-smoke1 && pnpm run cjs-smoke1 && node smoke_test/ex1.mjs  && node smoke_test/ex1.cjs && tsx smoke_test/ex1.ts",
 		"prepack": "clean-publish-scripts -c",
 		"postpack": "clean-publish-scripts -r",
 		"trivy-check": "trivy config . && trivy fs .",
@@ -59,7 +60,16 @@
 		"s2": "node dist/index.js ~/works/some-notes2/sigstore-part2a-blog.md",
 		"s3": "node dist/index.js ~/works/some-notes2/sigstore-part3a-blog.md"
 	},
-	"keywords": [],
+	"keywords": [
+		"markdown",
+		"drupal",
+		"html",
+		"converter",
+		"unified",
+		"remark",
+		"rehype",
+		"cli"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/heiwa4126/md2drupal.git"
@@ -69,7 +79,7 @@
 	},
 	"homepage": "https://github.com/heiwa4126/md2drupal#readme",
 	"license": "MIT",
-	"description": "",
+	"description": "Convert Markdown to Drupal-compatible HTML using the Unified ecosystem (remark/rehype)",
 	"files": [
 		"dist/**/*.js",
 		"dist/**/*.cjs",
@@ -88,6 +98,7 @@
 		"vitest": "^4.0.13"
 	},
 	"dependencies": {
+		"@heiwa4126/md2drupal": "link:",
 		"commander": "^14.0.2",
 		"rehype-stringify": "^10.0.1",
 		"remark-gfm": "^4.0.1",
@@ -98,8 +109,5 @@
 	},
 	"engines": {
 		"node": ">=18.0.0"
-	},
-	"workspaces": [
-		"."
-	]
+	}
 }

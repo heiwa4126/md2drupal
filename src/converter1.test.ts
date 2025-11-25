@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import convertMarkdownToHTML from "./converter1.js";
+import { convertMarkdownToHTML } from "./converter1.js";
 
 const TEST_OUTPUT_DIR = path.join(import.meta.dirname, "..", "testdata", "output");
 

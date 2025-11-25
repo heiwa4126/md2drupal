@@ -4,10 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@heiwa4126/md2drupal': 'link:'
+
 importers:
 
   .:
     dependencies:
+      '@heiwa4126/md2drupal':
+        specifier: 'link:'
+        version: 'link:'
       commander:
         specifier: ^14.0.2
         version: 14.0.2
