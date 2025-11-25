@@ -9,6 +9,7 @@
 		"md2drupal": "dist/index.js"
 	},
 	"scripts": {
+		"main": "tsx src/index.ts",
 		"build": "tsup",
 		"test": "vitest run",
 		"test:run": "vitest run",
@@ -19,7 +20,7 @@
 		"format": "biome format --write .",
 		"format:full": "pnpm pkg fix && biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
 		"esm-smoke1": "node dist/index.js -h",
-		"cjs-smoke1": "node dist/index.cjs -h",
+		"cjs-smoke1": "node dist/index.cjs -V",
 		"smoke-test": "pnpm run esm-smoke1 && pnpm run cjs-smoke1",
 		"prepack": "clean-publish-scripts -c",
 		"postpack": "clean-publish-scripts -r",

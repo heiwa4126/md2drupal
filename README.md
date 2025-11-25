@@ -27,18 +27,12 @@ md2drupal <変換元のmarkdownファイル>
 
 ```sh
 pnpm i
-pnpm run watch &
-## ./src の下をいろいろ編集する。 ./dist に出来る
-pnpm run lint
-pnpm run lint:package
-pnpm run format
-pnpm test # TODO:testまだ書いてないです
-# まずローカルに発行して試す。1個上にtarballできる。よそのプロジェクトでnpm i foo.tgzする
-pnpm run pack
+pnpm run prepublishOnly
+pnpm pack
 # バージョニング
 git add --all && git commit -am '...'
 pnpm version patch
-git push && git push --tags
+git push --follow-tags
 # npmjs.com に発行
 pnpm run build && pnpm publish --access=public
 ```
