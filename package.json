@@ -3,8 +3,19 @@
 	"version": "0.0.6-alpha2",
 	"type": "module",
 	"main": "./dist/converter1.js",
-	"module": "./dist/converter1.js",
 	"types": "./dist/converter1.d.ts",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/converter1.d.ts",
+				"default": "./dist/converter1.js"
+			},
+			"require": {
+				"types": "./dist/converter1.d.ts",
+				"default": "./dist/converter1.cjs"
+			}
+		}
+	},
 	"bin": {
 		"md2drupal": "dist/index.js"
 	},
@@ -15,8 +26,7 @@
 		"test:run": "vitest run",
 		"test:watch": "vitest",
 		"clean": "rm -rf dist",
-		"link-self": "mkdir -p node_modules/@heiwa4126 && rm -f node_modules/@heiwa4126/md2drupal && ln -s \"$PWD\" node_modules/@heiwa4126/md2drupal",
-		"prepublishOnly": "pnpm run lint && pnpm run test && pnpm run clean && pnpm run build && pnpm run link-self && pnpm run smoke-test",
+		"prepublishOnly": "pnpm run lint && pnpm run test && pnpm run clean && pnpm run build && pnpm run smoke-test",
 		"lint": "biome lint .",
 		"format": "biome format --write .",
 		"format:full": "pnpm pkg fix && biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
@@ -97,7 +107,7 @@
 		"tsup": "^8.5.1",
 		"tsx": "^4.20.6",
 		"typescript": "^5.9.3",
-		"vitest": "^4.0.13"
+		"vitest": "^4.0.14"
 	},
 	"dependencies": {
 		"commander": "^14.0.2",
