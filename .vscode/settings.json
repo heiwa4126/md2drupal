@@ -1,5 +1,5 @@
 {
-	"cSpell.words": ["hrefs", "testdata"],
+	"cSpell.words": ["hrefs", "linkedom", "testdata", "rsbuild", "awsgpu"],
 	"editor.codeActionsOnSave": {
 		"source.organizeImports.biome": "explicit",
 		"source.fixAll.biome": "explicit"
