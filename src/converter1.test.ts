@@ -108,6 +108,10 @@ describe("convertMarkdownToHTML", () => {
 		await testConversion("test3", { includeCss: true });
 	});
 
+	test("should convert test4.md to HTML matching test4_expected.html", async () => {
+		await testConversion("test4");
+	});
+
 	test("should create output file if it doesn't exist", async () => {
 		const { outputFile } = getTestFilePaths("test1", "new_output");
 
@@ -258,5 +262,45 @@ describe("convertMarkdownToHTML", () => {
 		// Should not have class on body
 		expect(generatedHTML).toContain("<body>");
 		expect(generatedHTML).not.toContain('<body class="markdown-body">');
+	});
+
+	test("should include charset meta tag in all generated HTML", async () => {
+		const generatedHTML = await convertAndRead("test1", "charset_test");
+		expect(generatedHTML).toContain('<meta charset="utf-8">');
+	});
+
+	test("should extract and use Front Matter description for meta tag", async () => {
+		const generatedHTML = await convertAndRead("test4", "frontmatter_description_test");
+		expect(generatedHTML).toContain(
+			'<meta name="description" content="This is a test document for YAML Front Matter support in md2drupal. It demonstrates meta tag generation from Front Matter data.">',
+		);
+	});
+
+	test("should extract and use Front Matter keywords (array) for meta tag", async () => {
+		const generatedHTML = await convertAndRead("test4", "frontmatter_keywords_test");
+		expect(generatedHTML).toContain(
+			'<meta name="keywords" content="markdown, drupal, yaml, front-matter, html, meta-tags">',
+		);
+	});
+
+	test("should extract and use Front Matter author for meta tag", async () => {
+		const generatedHTML = await convertAndRead("test4", "frontmatter_author_test");
+		expect(generatedHTML).toContain('<meta name="author" content="Test Author">');
+	});
+
+	test("should not include YAML Front Matter in HTML body", async () => {
+		const generatedHTML = await convertAndRead("test4", "frontmatter_removal_test");
+		expect(generatedHTML).not.toContain("---");
+		expect(generatedHTML).not.toContain("description:");
+		expect(generatedHTML).not.toContain("keywords:");
+		expect(generatedHTML).not.toContain("author:");
+	});
+
+	test("should handle documents without Front Matter (backward compatibility)", async () => {
+		const generatedHTML = await convertAndRead("test1", "no_frontmatter_test");
+		expect(generatedHTML).toContain('<meta charset="utf-8">');
+		expect(generatedHTML).not.toContain('<meta name="description"');
+		expect(generatedHTML).not.toContain('<meta name="keywords"');
+		expect(generatedHTML).not.toContain('<meta name="author"');
 	});
 });

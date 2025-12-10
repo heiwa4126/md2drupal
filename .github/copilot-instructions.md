@@ -8,13 +8,26 @@ TypeScript-based CLI tool that converts Markdown to Drupal-compatible HTML using
 
 ### Processing Pipeline (src/converter1.ts)
 
-Unified pipeline transforms Markdown → mdast → hast → HTML:
+Two-pass processing pipeline:
 
+**First Pass** (Title & Front Matter extraction):
+1. `remarkParse` - Parse Markdown to mdast
+2. `remarkGfm` - Add GFM support
+3. `remarkFrontmatter` - Recognize YAML Front Matter as mdast node
+4. `remarkExtractFrontmatter` - Extract Front Matter data to `file.data` (uses `yaml.parse`)
+5. `remarkRehype` - Convert to hast
+6. `rehypeStringify` - Serialize (for processing)
+7. Extract first heading text for title, store Front Matter data
+
+**Second Pass** (Full conversion):
 1. `remarkParse` - Parse Markdown to mdast
 2. `remarkGfm` - Add GFM support (tables, strikethrough, etc.)
-3. `remarkRehype` - Convert mdast to hast (Markdown AST to HTML AST)
-4. `drupalFixupPlugin` - Custom hast transformations for Drupal
-5. `rehypeStringify` - Serialize hast to HTML string
+3. `remarkFrontmatter` - Recognize and remove YAML Front Matter from output
+4. `remarkRehype` - Convert mdast to hast (Markdown AST to HTML AST)
+5. `drupalFixupPlugin` - Custom hast transformations for Drupal
+6. `rehypeStringify` - Serialize hast to HTML string
+
+**Error Handling**: YAML parse errors are caught, logged to stderr, and ignored (processing continues without Front Matter)
 
 ### Custom Drupal Transformations (src/drupal_fixup.ts)
 
@@ -25,6 +38,35 @@ The plugin uses `unist-util-visit` to traverse the hast tree and applies:
 - **Images**: Transform into Drupal's nested structure: `div.img-grid--1 > div.lb-gallery > drupal-entity` with media entity metadata
 - **Code blocks**: Convert `language-sh` and `language-bash` to `language-php` for Drupal's syntax highlighter, trim whitespace from code content
 - **Paragraphs**: Remove `<p>` wrappers around image divs to prevent invalid HTML nesting
+
+### YAML Front Matter & Meta Tags (src/converter1.ts)
+
+**FrontMatterData Interface**:
+```typescript
+export interface FrontMatterData {
+  description?: string;
+  keywords?: string | string[];
+  author?: string;
+}
+```
+
+**Meta Tag Generation**:
+- `generateMetaTags(data: FrontMatterData): string` - Generates HTML meta tags from Front Matter
+- Uses `escape-html` for XSS protection on all content attribute values
+- Keywords: Arrays are joined with ", " (comma + space)
+- Returns empty string if no Front Matter fields present
+
+**HTML Output Structure**:
+```html
+<head>
+  <meta charset="utf-8">  <!-- Always first element -->
+  <title>...</title>
+  <meta name="description" content="...">  <!-- If present in Front Matter -->
+  <meta name="keywords" content="...">     <!-- If present in Front Matter -->
+  <meta name="author" content="...">       <!-- If present in Front Matter -->
+  <!-- CSS link and style (if includeCss option) -->
+</head>
+```
 
 ### Conversion Options (src/converter1.ts)
 
@@ -82,6 +124,10 @@ Converts testdata/*.md files and compares against golden *.html files. Tests use
 - `test3.md`: Simple document with headings, paragraphs, lists
   - `test3_expected.html`: Default output (no CSS)
   - `test3_expected_with_css.html`: CSS-enabled output (with GitHub Markdown CSS)
+- `test4.md`: YAML Front Matter test (description, keywords array, author)
+  - `test4_expected.html`: Output with meta tags from Front Matter
+
+**All expected HTML files include `<meta charset="utf-8">` as the first element in `<head>`**
 
 **Helper Functions**:
 - `testConversion(testName, options?)`: Converts markdown and compares with expected HTML
@@ -173,6 +219,10 @@ if (firstChild && firstChild.type === "text" && "value" in firstChild) {
 ## External Dependencies
 
 - `unified` ecosystem: Core processing pipeline
+- `remark-frontmatter`: YAML Front Matter recognition in mdast
+- `remark-extract-frontmatter`: Extract Front Matter data to VFile.data
+- `yaml`: YAML parsing for Front Matter
+- `escape-html`: HTML escaping for XSS protection in meta tags
 - `commander`: CLI argument parsing
 - `unist-util-visit`: AST traversal utility
 - **No runtime dependencies on bundlers** - Pure TypeScript compilation
