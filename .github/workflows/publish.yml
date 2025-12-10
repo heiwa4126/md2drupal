@@ -13,9 +13,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  publish:
+  osv-scan:
     # Only run if pushed by repository owner
     if: github.repository_owner == github.actor
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@b77c075a1235514558f0eb88dbd31e22c45e0cd2 # v2.3.0
+    permissions:
+      # Required to upload SARIF file to CodeQL
+      actions: read
+      # Require writing security events to upload SARIF file to security tab
+      security-events: write
+      # Only need to read contents
+      contents: read
+    with:
+      scan-args: "-r ."
+
+  publish:
+    # Only run if pushed by repository owner and after OSV scan passes
+    if: github.repository_owner == github.actor
+    needs: osv-scan
     runs-on: ubuntu-latest
     environment: npmjs
     permissions:
@@ -23,12 +38,12 @@ jobs:
       id-token: write # OIDC に必須
     steps:
       - name: Checkout
-        uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6-beta
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 1
 
       - name: Setup Node.js
-        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
@@ -41,7 +56,7 @@ jobs:
           run_install: false
 
       - name: Get pnpm store directory
-        id: pnpm-store
+        id: pnpm-cache
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
@@ -49,13 +64,15 @@ jobs:
       - name: Setup pnpm cache
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
       - name: Use latest npm supporting OIDC provenance
-        run: npm i -g npm@latest # npm を 11.5.1+ に（publish用）
+        run: npm i -g npm@latest # npm を 11.5.1+ に (publish用)
+      - name: Show npm version
+        run: npm --version
 
       - name: Install dependencies (pnpm install)
         run: pnpm install --frozen-lockfile

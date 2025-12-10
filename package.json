@@ -35,9 +35,9 @@
 		"smoke-test": "pnpm run esm-smoke1 && pnpm run cjs-smoke1 && node smoke_test/ex1.mjs  && node smoke_test/ex1.cjs && tsx smoke_test/ex1.ts",
 		"prepack": "clean-publish-scripts -c",
 		"postpack": "clean-publish-scripts -r",
-		"trivy-check": "trivy config . && trivy fs .",
-		"trivy-license": "trivy fs --scanners license --severity HIGH,CRITICAL .",
-		"trivy-sbom": "trivy fs --format spdx-json --output project-sbom.json .",
+		"trivy": "trivy config . && trivy fs --exit-code 1 --severity HIGH,CRITICAL .",
+		"sbom": "trivy fs --scanners vuln --format spdx-json --output sbom.spdx.json .",
+		"osv-scan": "osv-scanner -r .",
 		"ex1": "node dist/index.js testdata/test1.md",
 		"ex2": "node dist/index.js testdata/test2.md",
 		"phi3": "node dist/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog.md",
@@ -97,17 +97,17 @@
 		"!dist/**/*.map"
 	],
 	"devDependencies": {
-		"@biomejs/biome": "^2.3.7",
-		"@heiwa4126/clean-publish-scripts": "^0.0.1",
+		"@biomejs/biome": "^2.3.8",
+		"@heiwa4126/clean-publish-scripts": "^0.0.2",
 		"@types/hast": "^3.0.4",
 		"@types/mdast": "^4.0.4",
-		"@types/node": "^24.10.1",
+		"@types/node": "^24.10.2",
 		"@types/unist": "^3.0.3",
 		"linkedom": "^0.18.12",
 		"tsup": "^8.5.1",
-		"tsx": "^4.20.6",
+		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",
-		"vitest": "^4.0.14"
+		"vitest": "^4.0.15"
 	},
 	"dependencies": {
 		"commander": "^14.0.2",
