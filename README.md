@@ -94,11 +94,11 @@ author: "著者名"
 
 ```html
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>記事のタイトル</title>
-  <meta name="description" content="この記事の説明文">
-  <meta name="keywords" content="markdown, drupal, html">
-  <meta name="author" content="著者名">
+  <meta name="description" content="この記事の説明文" />
+  <meta name="keywords" content="markdown, drupal, html" />
+  <meta name="author" content="著者名" />
 </head>
 ```
 
