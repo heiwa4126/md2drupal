@@ -1,70 +1,57 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>h1</title>
-	</head>
-	<body>
-		<h1 id="h1">h1</h1>
-		<div class="img-grid--1">
-			<div class="lb-gallery">
-				<drupal-entity
-					alt="s1"
-					title="s1"
-					data-entity-type="media"
-					data-entity-uuid="11111111-2222-3333-4444-555555555555"
-					data-embed-button="media_browser"
-					data-entity-embed-display="media_image"
-					data-entity-embed-display-settings="{&#x22;image_style&#x22;:&#x22;crop_freeform&#x22;,&#x22;image_link&#x22;:&#x22;&#x22;,&#x22;image_loading&#x22;:{&#x22;attribute&#x22;:&#x22;lazy&#x22;},&#x22;svg_render_as_image&#x22;:true,&#x22;svg_attributes&#x22;:{&#x22;width&#x22;:&#x22;&#x22;,&#x22;height&#x22;:&#x22;&#x22;}}"
-				></drupal-entity>
-			</div>
-		</div>
-		<h2 id="h2">h2</h2>
-		<p>変換後の特徴は以下の通り:</p>
-		<div class="table-layer">
-			<table class="table-headling-x">
-				<thead>
-					<tr>
-						<th>特徴</th>
-						<th>元のモデル</th>
-						<th>量子化モデル</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>メモリとストレージ</td>
-						<td>大きい</td>
-						<td>✅<strong>小さい</strong></td>
-					</tr>
-					<tr>
-						<td>計算速度</td>
-						<td>低速</td>
-						<td>✅<strong>高速</strong></td>
-					</tr>
-					<tr>
-						<td>精度とパフォーマンス</td>
-						<td>✅<strong>高い</strong></td>
-						<td>やや低下</td>
-					</tr>
-					<tr>
-						<td>ハードウェア要件</td>
-						<td>GPU 必須</td>
-						<td>✅<strong>CPU で十分</strong></td>
-					</tr>
-					<tr>
-						<td>ファインチューニング</td>
-						<td>✅<strong>可能</strong></td>
-						<td>不可(or 制限多)</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<h3 id="h3">h3</h3>
-		<p>テストですよ</p>
-		<p>
-			参考: <a href="https://github.com/microsoft/Phi-3CookBook/blob/main/md/02.QuickStart/Huggingface_QuickStart.md"
-			>Using Phi-3 in Hugging Face - Phi-3 CookBook</a>
-		</p>
-		<pre><code class="language-python">from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+<head>
+<meta charset="utf-8">
+<title>h1</title>
+
+
+
+</head>
+<body>
+<h1 id="h1">h1</h1>
+<div class="img-grid--1"><div class="lb-gallery"><drupal-entity alt="s1" title="s1" data-entity-type="media" data-entity-uuid="11111111-2222-3333-4444-555555555555" data-embed-button="media_browser" data-entity-embed-display="media_image" data-entity-embed-display-settings="{&#x22;image_style&#x22;:&#x22;crop_freeform&#x22;,&#x22;image_link&#x22;:&#x22;&#x22;,&#x22;image_loading&#x22;:{&#x22;attribute&#x22;:&#x22;lazy&#x22;},&#x22;svg_render_as_image&#x22;:true,&#x22;svg_attributes&#x22;:{&#x22;width&#x22;:&#x22;&#x22;,&#x22;height&#x22;:&#x22;&#x22;}}"></drupal-entity></div></div>
+<h2 id="h2">h2</h2>
+<p>変換後の特徴は以下の通り:</p>
+<div class="table-layer"><table class="table-headling-x">
+<thead>
+<tr>
+<th>特徴</th>
+<th>元のモデル</th>
+<th>量子化モデル</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>メモリとストレージ</td>
+<td>大きい</td>
+<td>✅<strong>小さい</strong></td>
+</tr>
+<tr>
+<td>計算速度</td>
+<td>低速</td>
+<td>✅<strong>高速</strong></td>
+</tr>
+<tr>
+<td>精度とパフォーマンス</td>
+<td>✅<strong>高い</strong></td>
+<td>やや低下</td>
+</tr>
+<tr>
+<td>ハードウェア要件</td>
+<td>GPU 必須</td>
+<td>✅<strong>CPU で十分</strong></td>
+</tr>
+<tr>
+<td>ファインチューニング</td>
+<td>✅<strong>可能</strong></td>
+<td>不可(or 制限多)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="h3">h3</h3>
+<p>テストですよ</p>
+<p>参考: <a href="https://github.com/microsoft/Phi-3CookBook/blob/main/md/02.QuickStart/Huggingface_QuickStart.md">Using Phi-3 in Hugging Face - Phi-3 CookBook</a></p>
+<pre><code class="language-python">from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 model_id = "microsoft/Phi-3-mini-4k-instruct"
 device = "cuda"  # or "cpu"
@@ -106,7 +93,7 @@ print(output[0]["generated_text"])
 # ]
 # output = pipe(messages, **generation_args)
 # print(output[0]["generated_text"])</code></pre>
-		<pre><code class="language-php">ls -la test</code></pre>
-		<pre><code class="language-php">find .. -type d -name .vscode</code></pre>
-	</body>
+<pre><code class="language-php">ls -la test</code></pre>
+<pre><code class="language-php">find .. -type d -name .vscode</code></pre>
+</body>
 </html>

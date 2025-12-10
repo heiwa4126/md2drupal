@@ -71,6 +71,51 @@ md2drupal input.md -c -o preview.html
 - ヘッダ内のインライン要素（リンク、強調など）はプレーンテキストとして抽出されます
 - ヘッダが見つからない場合は、デフォルトで `"Converted HTML"` が使用されます
 
+### YAML Front Matter サポート
+
+Markdown ファイルの先頭に YAML Front Matter を記述することで、HTML の `<meta>` タグを自動生成できます。
+
+```markdown
+---
+description: "この記事の説明文"
+keywords:
+  - markdown
+  - drupal
+  - html
+author: "著者名"
+---
+
+# 記事のタイトル
+
+本文...
+```
+
+↓ 変換後の `<head>` 内
+
+```html
+<head>
+  <meta charset="utf-8">
+  <title>記事のタイトル</title>
+  <meta name="description" content="この記事の説明文">
+  <meta name="keywords" content="markdown, drupal, html">
+  <meta name="author" content="著者名">
+</head>
+```
+
+**対応フィールド**:
+
+- `description` - `<meta name="description">` タグとして出力
+- `keywords` - 文字列または配列（配列の場合はカンマ区切りに変換）。`<meta name="keywords">` タグとして出力
+- `author` - `<meta name="author">` タグとして出力
+
+**セキュリティ**: すべてのメタタグの content 属性値は HTML エスケープされます（XSS 対策）。
+
+**エラーハンドリング**: YAML Front Matter のパースに失敗した場合、警告を stderr に出力し、Front Matter 全体を無視して変換を続行します。
+
+### 文字エンコーディング
+
+全ての HTML 出力に `<meta charset="utf-8">` タグが自動的に追加されます（`<head>` の最初の要素）。
+
 ### スタイル付きプレビュー（`--css`オプション）
 
 `--css`（または`-c`）オプションを使用すると、GitHub Markdown CSS を含むスタンドアロン HTML ファイルとして出力します。これはブラウザで直接開いてプレビューする場合に便利です。
