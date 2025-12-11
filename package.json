@@ -20,7 +20,7 @@
 		"md2drupal": "dist/index.js"
 	},
 	"scripts": {
-		"main": "tsx src/index.ts",
+		"cli": "tsx src/index.ts",
 		"build": "tsup",
 		"test": "vitest run",
 		"test:run": "vitest run",
@@ -31,8 +31,7 @@
 		"format": "biome format --write .",
 		"format:full": "pnpm pkg fix && biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
 		"esm-smoke1": "node dist/index.js -h",
-		"cjs-smoke1": "node dist/index.cjs -V",
-		"smoke-test": "pnpm run esm-smoke1 && pnpm run cjs-smoke1 && node smoke_test/ex1.mjs  && node smoke_test/ex1.cjs && tsx smoke_test/ex1.ts",
+		"smoke-test": "pnpm run esm-smoke1 && node smoke_test/ex1.mjs  && node smoke_test/ex1.cjs && tsx smoke_test/ex1.ts",
 		"prepack": "clean-publish-scripts -c",
 		"postpack": "clean-publish-scripts -r",
 		"trivy": "trivy config . && trivy fs --exit-code 1 --severity HIGH,CRITICAL .",
@@ -102,7 +101,7 @@
 		"@types/escape-html": "^1.0.4",
 		"@types/hast": "^3.0.4",
 		"@types/mdast": "^4.0.4",
-		"@types/node": "^24.10.2",
+		"@types/node": "^25.0.0",
 		"@types/unist": "^3.0.3",
 		"linkedom": "^0.18.12",
 		"tsup": "^8.5.1",
@@ -122,6 +121,11 @@
 		"unified": "^11.0.5",
 		"unist-util-visit": "^5.0.0",
 		"yaml": "^2.8.2"
+	},
+	"pnpm": {
+		"overrides": {
+			"chokidar": "4.0.1"
+		}
 	},
 	"engines": {
 		"node": ">=18.0.0"
