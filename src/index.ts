@@ -11,7 +11,7 @@ const program = new Command();
 program
 	.name("md2drupal")
 	.description("Convert Markdown files to Drupal-compatible HTML")
-	.version(pkg.version)
+	.version(pkg.version, "-v, --version", "Show version")
 	.argument("<input-file>", "Markdown file to convert")
 	.option("-o, --output <file>", "Output HTML file path")
 	.option("-c, --css", "Include GitHub Markdown CSS from CDN")
@@ -37,5 +37,3 @@ program
 	});
 
 program.parse();
-
-export default convertMarkdownToHTML;
