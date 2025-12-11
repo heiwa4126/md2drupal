@@ -37,6 +37,7 @@
 		"trivy": "trivy config . && trivy fs --exit-code 1 --severity HIGH,CRITICAL .",
 		"sbom": "trivy fs --scanners vuln --format spdx-json --output sbom.spdx.json .",
 		"osv-scan": "osv-scanner -r .",
+		"cloc": "cloc . --exclude-list-file=.gitignore",
 		"ex1": "node dist/index.js testdata/test1.md",
 		"ex2": "node dist/index.js testdata/test2.md",
 		"phi3": "node dist/index.js ~/works/some-notes2/localLLM/using-phi3-locally-blog.md",
