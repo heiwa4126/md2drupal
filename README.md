@@ -21,7 +21,7 @@ Markdown から、ある特殊な Drupal 入力用の HTML に変換するツー
 	},
 ```
 
-が入ってます。tsup が chokidar@5 依存になったら取る。
+が入ってます。tsup が chokidar@5 依存になったら取る。tsdown にする手もある
 
 他参考: [(1) X ユーザーの pnpm さん: 「We have discovered that chokidar has switched off provenance a year ago and now it fails with the trustPolicy setting set to no-downgrade. We'll need to think about a way to deal with these cases. https://t.co/fSEJQYWr1e」 / X](https://x.com/pnpmjs/status/1987836672705237243)
 
