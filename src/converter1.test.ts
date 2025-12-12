@@ -98,7 +98,7 @@ describe("convertMarkdownToHTML", () => {
 		["test3", undefined, "test3_expected.html"],
 		["test3", { includeCss: true }, "test3_expected_with_css.html"],
 		["test4", undefined, "test4_expected.html"],
-	])("should convert %s.md to HTML matching %s", async (testName, options, expectedFile) => {
+	])("should convert %s.md to HTML matching %s", async (testName, options, _expectedFile) => {
 		await testConversion(testName, options);
 	});
 
