@@ -21,7 +21,7 @@
 	},
 	"scripts": {
 		"cli": "tsx src/index.ts",
-		"build": "tsup",
+		"build": "tsdown",
 		"test": "vitest run",
 		"test:run": "vitest run",
 		"test:watch": "vitest",
@@ -105,7 +105,7 @@
 		"@types/node": "^25.0.1",
 		"@types/unist": "^3.0.3",
 		"linkedom": "^0.18.12",
-		"tsup": "^8.5.1",
+		"tsdown": "^0.17.3",
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",
 		"vitest": "^4.0.15"
@@ -122,11 +122,6 @@
 		"unified": "^11.0.5",
 		"unist-util-visit": "^5.0.0",
 		"yaml": "^2.8.2"
-	},
-	"pnpm": {
-		"overrides": {
-			"chokidar": "4.0.1"
-		}
 	},
 	"engines": {
 		"node": ">=18.0.0"
