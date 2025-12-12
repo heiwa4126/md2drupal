@@ -165,3 +165,11 @@ pnpm publish --access=public
 が入ってます。tsup が chokidar@5 依存になったら取る。tsdown にする手もある
 
 他参考: [(1) X ユーザーの pnpm さん: 「We have discovered that chokidar has switched off provenance a year ago and now it fails with the trustPolicy setting set to no-downgrade. We'll need to think about a way to deal with these cases. https://t.co/fSEJQYWr1e」 / X](https://x.com/pnpmjs/status/1987836672705237243)
+
+上の設定消したら
+
+```sh
+pnpm install --no-frozen-lockfile
+```
+
+を実行するのを忘れないこと。package.json から消しても pnpm-lock.yaml には残る。
