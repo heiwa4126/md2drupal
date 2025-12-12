@@ -174,11 +174,25 @@ const result = await unified()
 4. Build
 5. Smoke test (verify CLI works in both formats)
 
-### Code Quality Tools
+
+## Code Quality Tools
 
 - **Biome**: Linter and formatter (100 char line width, strict rules in biome.jsonc)
 - **TypeScript**: Strict mode with `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`
 - **Vitest**: Test runner with node environment
+
+### Complexity & Duplication Checks (lizard)
+
+- Use `lizard .` to check cyclomatic complexity (CCN) and function length. Refactor any function with CCN > 15 or that triggers a warning.
+- Use `lizard -Eduplicate .` to detect duplicated code blocks (DCD). Focus on reducing duplication especially in test code.
+- After major refactoring, always re-run lizard to confirm no warnings remain.
+- If duplication is found in test code, prefer parameterized tests (e.g. `test.each`) and helper functions to reduce redundancy.
+- If duplication or complexity is found in production code, refactor by extracting small functions and simplifying logic. Confirm all tests pass after refactoring.
+
+#### Example Policy
+- No function in production code should exceed CCN 15 (lizard warning threshold).
+- Test code should avoid copy-paste by using parameterized tests and shared helpers.
+- Document any exceptions or justified complexity in this file.
 
 ## Project-Specific Conventions
 

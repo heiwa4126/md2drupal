@@ -122,33 +122,66 @@ export function drupalFixupPlugin() {
 	//   hast -> hast plugin
 	//   Element -> Parent -> Node
 	return (tree: Node) => {
-		visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {
-			if (["h1", "h2", "h3", "h4"].includes(node.tagName) && node.children.length > 0) {
-				// Add IDs to headings
-				processHeaderNode(node);
-			} else if (node.tagName === "table") {
-				// Custom processing for <table> tags
-				processTableNode(node, index, parent);
-			} else if (node.tagName === "img") {
-				processImageNode(node, index, parent);
-			} else if (node.tagName === "code" && node.children.length > 0) {
-				const firstChild = node.children[0];
-				if (firstChild && firstChild.type === "text" && "value" in firstChild) {
-					firstChild.value = firstChild.value.trim();
-				}
-			}
+		visit(tree, "element", handleElementNode);
 
-			if (
+		// --- 分岐ごとの処理を小関数化 ---
+		function handleElementNode(node: Element, index: number, parent: Parent | null) {
+			if (isHeading(node)) {
+				processHeaderNode(node);
+				return;
+			}
+			if (node.tagName === "table") {
+				processTableNode(node, index, parent);
+				return;
+			}
+			if (node.tagName === "img") {
+				processImageNode(node, index, parent);
+				return;
+			}
+			if (isCodeBlock(node)) {
+				trimCodeText(node);
+				convertShellToPhp(node);
+				return;
+			}
+			// shell→php変換だけ必要な場合
+			if (isShellCode(node)) {
+				convertShellToPhp(node);
+			}
+		}
+
+		function isHeading(node: Element): boolean {
+			return ["h1", "h2", "h3", "h4"].includes(node.tagName) && node.children.length > 0;
+		}
+
+		function isCodeBlock(node: Element): boolean {
+			return node.tagName === "code" && node.children.length > 0;
+		}
+
+		function trimCodeText(node: Element) {
+			const firstChild = node.children[0];
+			if (firstChild && firstChild.type === "text" && "value" in firstChild) {
+				firstChild.value = firstChild.value.trim();
+			}
+		}
+
+		function isShellCode(node: Element): boolean {
+			return (
 				node.tagName === "code" &&
-				node.properties &&
-				node.properties.className &&
-				Array.isArray(node.properties.className) &&
-				(node.properties.className.includes("language-sh") ||
-					node.properties.className.includes("language-bash"))
+				Array.isArray(node.properties?.className) &&
+				(node.properties?.className.includes("language-sh") ||
+					node.properties?.className.includes("language-bash"))
+			);
+		}
+
+		function convertShellToPhp(node: Element) {
+			if (
+				Array.isArray(node.properties?.className) &&
+				(node.properties?.className.includes("language-sh") ||
+					node.properties?.className.includes("language-bash"))
 			) {
 				node.properties.className = ["language-php"];
 			}
-		});
+		}
 
 		// Remove <p> wrapping <div class="img-grid--1">
 		visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {

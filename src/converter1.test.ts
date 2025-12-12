@@ -92,80 +92,85 @@ describe("convertMarkdownToHTML", () => {
 		expect(normalizeHTML(generatedHTML)).toBe(normalizeHTML(expectedHTML));
 	}
 
-	test("should convert test1.md to HTML matching test1_expected.html", async () => {
-		await testConversion("test1");
+	test.each([
+		["test1", undefined, "test1_expected.html"],
+		["test2", undefined, "test2_expected.html"],
+		["test3", undefined, "test3_expected.html"],
+		["test3", { includeCss: true }, "test3_expected_with_css.html"],
+		["test4", undefined, "test4_expected.html"],
+	])("should convert %s.md to HTML matching %s", async (testName, options, expectedFile) => {
+		await testConversion(testName, options);
 	});
 
-	test("should convert test2.md to HTML matching test2_expected.html", async () => {
-		await testConversion("test2");
-	});
-
-	test("should convert test3.md to HTML matching test3_expected.html", async () => {
-		await testConversion("test3");
-	});
-
-	test("should convert test3.md to HTML with CSS matching test3_expected_with_css.html", async () => {
-		await testConversion("test3", { includeCss: true });
-	});
-
-	test("should convert test4.md to HTML matching test4_expected.html", async () => {
-		await testConversion("test4");
-	});
-
-	test("should create output file if it doesn't exist", async () => {
-		const { outputFile } = getTestFilePaths("test1", "new_output");
-
-		expect(existsSync(outputFile)).toBe(false);
-
-		await convertAndRead("test1", "new_output");
-
-		expect(existsSync(outputFile)).toBe(true);
-	});
-
-	test("should generate valid HTML with DOCTYPE and basic structure", async () => {
-		const generatedHTML = await convertAndRead("test1", "structure_test");
-
-		expect(generatedHTML).toContain("<!DOCTYPE html>");
-		expect(generatedHTML).toContain("<html>");
-		expect(generatedHTML).toContain("<head>");
-		expect(generatedHTML).toContain("<title>h1</title>");
-		expect(generatedHTML).toContain("</head>");
-		expect(generatedHTML).toContain("<body>");
-		expect(generatedHTML).toContain("</body>");
-		expect(generatedHTML).toContain("</html>");
-	});
-
-	test("should handle headers with URL-encoded IDs", async () => {
-		const generatedHTML = await convertAndRead("test1", "headers_test");
-
-		expect(generatedHTML).toContain('id="h1"');
-		expect(generatedHTML).toContain('id="h2"');
-		expect(generatedHTML).toContain('id="h3"');
-	});
-
-	test("should wrap tables in div.table-layer", async () => {
-		const generatedHTML = await convertAndRead("test1", "table_test");
-
-		expect(generatedHTML).toContain('<div class="table-layer">');
-		expect(generatedHTML).toContain('<table class="table-headling-x">');
-	});
-
-	test("should wrap images in Drupal structure", async () => {
-		const generatedHTML = await convertAndRead("test1", "image_test");
-
-		expect(generatedHTML).toContain('<div class="img-grid--1">');
-		expect(generatedHTML).toContain('<div class="lb-gallery">');
-		expect(generatedHTML).toContain("<drupal-entity");
-		expect(generatedHTML).toContain('data-entity-type="media"');
-	});
-
-	test("should convert bash/sh code blocks to php language class", async () => {
-		const generatedHTML = await convertAndRead("test1", "code_test");
-
-		expect(generatedHTML).toContain('<code class="language-python">');
-		expect(generatedHTML).toContain('<code class="language-php">');
-		expect(generatedHTML).not.toContain('<code class="language-bash">');
-		expect(generatedHTML).not.toContain('<code class="language-sh">');
+	test.each([
+		[
+			"should create output file if it doesn't exist",
+			"test1",
+			"new_output",
+			(_html: string, outputFile: string) => {
+				expect(existsSync(outputFile)).toBe(true);
+			},
+		],
+		[
+			"should generate valid HTML with DOCTYPE and basic structure",
+			"test1",
+			"structure_test",
+			(html: string, _outputFile: string) => {
+				expect(html).toContain("<!DOCTYPE html>");
+				expect(html).toContain("<html>");
+				expect(html).toContain("<head>");
+				expect(html).toContain("<title>h1</title>");
+				expect(html).toContain("</head>");
+				expect(html).toContain("<body>");
+				expect(html).toContain("</body>");
+				expect(html).toContain("</html>");
+			},
+		],
+		[
+			"should handle headers with URL-encoded IDs",
+			"test1",
+			"headers_test",
+			(html: string, _outputFile: string) => {
+				expect(html).toContain('id="h1"');
+				expect(html).toContain('id="h2"');
+				expect(html).toContain('id="h3"');
+			},
+		],
+		[
+			"should wrap tables in div.table-layer",
+			"test1",
+			"table_test",
+			(html: string, _outputFile: string) => {
+				expect(html).toContain('<div class="table-layer">');
+				expect(html).toContain('<table class="table-headling-x">');
+			},
+		],
+		[
+			"should wrap images in Drupal structure",
+			"test1",
+			"image_test",
+			(html: string, _outputFile: string) => {
+				expect(html).toContain('<div class="img-grid--1">');
+				expect(html).toContain('<div class="lb-gallery">');
+				expect(html).toContain("<drupal-entity");
+				expect(html).toContain('data-entity-type="media"');
+			},
+		],
+		[
+			"should convert bash/sh code blocks to php language class",
+			"test1",
+			"code_test",
+			(html: string, _outputFile: string) => {
+				expect(html).toContain('<code class="language-python">');
+				expect(html).toContain('<code class="language-php">');
+				expect(html).not.toContain('<code class="language-bash">');
+				expect(html).not.toContain('<code class="language-sh">');
+			},
+		],
+	])("%s", async (_desc, testName, outputName, check) => {
+		const { outputFile } = getTestFilePaths(testName, outputName);
+		const html = await convertAndRead(testName, outputName);
+		check(html, outputFile);
 	});
 
 	test("should preserve anchor link consistency (href matches id)", async () => {
