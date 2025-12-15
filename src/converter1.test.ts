@@ -53,6 +53,15 @@ describe("convertMarkdownToHTML", () => {
 		}
 	});
 
+	test("should fallback gracefully on broken YAML Front Matter", async () => {
+		const inputFile = path.join(import.meta.dirname, "..", "testdata", "test_broken_yaml.md");
+		const outputFile = path.join(TEST_OUTPUT_DIR, "broken_yaml_output.html");
+		await convertMarkdownToHTML(inputFile, outputFile);
+		const html = readFileSync(outputFile, "utf-8");
+		expect(html).toContain("<title>Broken YAML Test</title>");
+		expect(html).not.toContain('<meta name="description"');
+	});
+
 	/**
 	 * Helper function to get test file paths
 	 */

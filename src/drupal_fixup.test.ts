@@ -93,6 +93,14 @@ describe("drupalFixupPlugin", () => {
 	describe("Code block language conversion", () => {
 		test.each([
 			{
+				name: "should convert empty shell code block to language-php",
+				markdown: "```sh\n```",
+				expects: [
+					{ type: "contain", value: 'class="language-php"' },
+					{ type: "notContain", value: 'class="language-sh"' },
+				],
+			},
+			{
 				name: "should convert language-sh to language-php",
 				markdown: "```sh\nls -la\n```",
 				expects: [
