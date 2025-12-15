@@ -7,7 +7,7 @@ function fixCjsExtension({ format }: { format: string }) {
 
 export default defineConfig([
 	{
-		entry: ["src/**/*.ts", "!src/index.ts", "!src/**/*.test.ts"],
+		entry: ["src/**/*.ts", "!src/cli.ts", "!src/**/*.test.ts"],
 		format: ["esm", "cjs"],
 		outDir: "dist",
 		unbundle: true,
@@ -17,7 +17,7 @@ export default defineConfig([
 		outExtensions: fixCjsExtension,
 	},
 	{
-		entry: ["src/index.ts"],
+		entry: ["src/cli.ts"],
 		format: ["esm"],
 		outDir: "dist",
 		unbundle: true,

@@ -88,7 +88,7 @@ export interface ConvertOptions {
 - `DEFAULT_CSS_URL`: GitHub Markdown CSS CDN URL (currently 5.8.1)
 - `DEFAULT_PADDING`: Body padding value (`"1.5em"`)
 
-### Entry Point (src/index.ts)
+### Entry Point (src/cli.ts)
 
 CLI using Commander.js with two options:
 
@@ -109,7 +109,7 @@ Default behavior: converts `input.md` to `input.html` in the same directory. She
 ### Package Exports (package.json)
 
 - Main entry: `dist/converter1.js` (library function)
-- Binary: `dist/index.js` (CLI tool)
+- Binary: `dist/cli.js` (CLI tool)
 - **Critical**: Uses `prepublishOnly` hook to run full test suite before publishing to npm
 
 ## Testing Strategy (Vitest)
