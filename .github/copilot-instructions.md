@@ -99,12 +99,13 @@ Default behavior: converts `input.md` to `input.html` in the same directory. She
 
 ## Build & Distribution
 
-### Dual Format Package (tsup.config.ts)
+### Dual Format Package (tsdown.config.ts)
 
 - Outputs both ESM (.js) and CJS (.cjs) from single TypeScript source
-- `bundle: false` - Each source file becomes separate output file
-- Generates `.d.ts` type definitions with source maps
+- `unbundle: true` - Each source file becomes separate output file
+- Generates `.d.ts` type definitions for library code
 - Excludes `*.test.ts` files from build
+- CLI (`cli.ts`) is built as ESM-only with minification enabled
 
 ### Package Exports (package.json)
 
@@ -161,9 +162,9 @@ const result = await unified()
 
 ### Quick Commands
 
-- `pnpm run main` - Run CLI via tsx (no build needed)
+- `pnpm run cli` - Run CLI via tsx (no build needed)
 - `pnpm test` - Run test suite
-- `pnpm run build` - Build with tsup
+- `pnpm run build` - Build with tsdown
 - `pnpm run smoke-test` - Test both ESM and CJS dist outputs
 
 ### Pre-publish Checklist (automated in prepublishOnly)
