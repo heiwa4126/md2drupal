@@ -100,7 +100,7 @@
 		"!dist/**/*.map"
 	],
 	"devDependencies": {
-		"@biomejs/biome": "^2.3.8",
+		"@biomejs/biome": "^2.3.9",
 		"@heiwa4126/clean-publish-scripts": "^0.0.2",
 		"@types/escape-html": "^1.0.4",
 		"@types/hast": "^3.0.4",
@@ -109,7 +109,7 @@
 		"@types/unist": "^3.0.3",
 		"@vitest/coverage-v8": "4.0.15",
 		"linkedom": "^0.18.12",
-		"tsdown": "^0.17.4",
+		"tsdown": "^0.18.0",
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",
 		"vitest": "^4.0.15"
