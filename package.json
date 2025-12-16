@@ -38,7 +38,7 @@
 		"trivy": "trivy config . && trivy fs --exit-code 1 --severity HIGH,CRITICAL .",
 		"sbom": "trivy fs --scanners vuln --format spdx-json --output sbom.spdx.json .",
 		"osv-scan": "osv-scanner -r .",
-		"cloc": "cloc . --exclude-list-file=.gitignore",
+		"cloc": "cloc $(git ls-files|grep -Fv pnpm-lock.yaml)",
 		"lizard": "lizard -EDuplicate -w .",
 		"lizard:all": "lizard -EDuplicate .",
 		"ex1": "node dist/cli.js testdata/test1.md",
