@@ -43,7 +43,8 @@
 		"cloc": "cloc $(git ls-files|grep -Fv pnpm-lock.yaml)",
 		"lizard": "lizard -EDuplicate -w .",
 		"lizard:all": "lizard -EDuplicate .",
-		"smells:all": "qlty smells --all --quiet"
+		"smells:all": "qlty smells --all --quiet",
+		"qlty": "qlty metrics --functions --all --quiet"
 	},
 	"keywords": [
 		"markdown",
