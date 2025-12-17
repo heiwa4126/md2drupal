@@ -42,7 +42,8 @@
 		"osv-scan": "osv-scanner -r .",
 		"cloc": "cloc $(git ls-files|grep -Fv pnpm-lock.yaml)",
 		"lizard": "lizard -EDuplicate -w .",
-		"lizard:all": "lizard -EDuplicate ."
+		"lizard:all": "lizard -EDuplicate .",
+		"smells:all": "qlty smells --all --quiet"
 	},
 	"keywords": [
 		"markdown",
