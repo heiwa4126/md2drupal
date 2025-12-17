@@ -238,3 +238,4 @@ tmp/*
 *.tmp
 
 *.html
+sbom.spdx.json
