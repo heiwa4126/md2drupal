@@ -113,7 +113,6 @@ function processHeaderNode(node: Element) {
  * Custom plugin for processing Markdown AST tree.
  * This plugin performs various operations on the tree, such as adding IDs to headings,
  * custom processing for table tags, and processing image nodes.
- *
  * @param tree - The Markdown AST tree to process.
  * @returns A function that performs the custom processing on the tree.
  */
@@ -122,58 +121,61 @@ export function drupalFixupPlugin() {
 	//   hast -> hast plugin
 	//   Element -> Parent -> Node
 	return (tree: Node) => {
-		visit(tree, "element", handleElementNode);
+		addHeaderIds(tree);
+		wrapTables(tree);
+		convertImages(tree);
+		fixCodeBlocks(tree);
+		unwrapImageDivs(tree);
+	};
+}
 
-		// --- 分岐ごとの処理を小関数化 ---
-		function handleElementNode(node: Element, index: number, parent: Parent | null) {
-			if (isHeading(node)) {
-				processHeaderNode(node);
-				return;
-			}
-			if (node.tagName === "table") {
-				processTableNode(node, index, parent);
-				return;
-			}
-			if (node.tagName === "img") {
-				processImageNode(node, index, parent);
-				return;
-			}
-			if (isCodeBlock(node)) {
-				trimCodeText(node);
-				convertShellToPhp(node);
-				return;
-			}
-			// shell→php変換だけ必要な場合
-			if (isShellCode(node)) {
-				convertShellToPhp(node);
-			}
+/**
+ * Adds ID attributes to h1–h4 heading elements in the given HAST tree.
+ * @param tree Root node of the HAST tree
+ */
+function addHeaderIds(tree: Node) {
+	visit(tree, "element", (node: Element) => {
+		if (["h1", "h2", "h3", "h4"].includes(node.tagName) && node.children.length > 0) {
+			processHeaderNode(node);
 		}
+	});
+}
 
-		function isHeading(node: Element): boolean {
-			return ["h1", "h2", "h3", "h4"].includes(node.tagName) && node.children.length > 0;
+/**
+ * Wraps table elements in a <div class="table-layer"> and adds classes for Drupal compatibility.
+ * @param tree Root node of the HAST tree
+ */
+function wrapTables(tree: Node) {
+	visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {
+		if (node.tagName === "table") {
+			processTableNode(node, index, parent);
 		}
+	});
+}
 
-		function isCodeBlock(node: Element): boolean {
-			return node.tagName === "code" && node.children.length > 0;
+/**
+ * Converts <img> elements to the nested <div> structure required by Drupal.
+ * @param tree Root node of the HAST tree
+ */
+function convertImages(tree: Node) {
+	visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {
+		if (node.tagName === "img") {
+			processImageNode(node, index, parent);
 		}
+	});
+}
 
-		function trimCodeText(node: Element) {
+/**
+ * Trims code block text and converts shell code classes to PHP for Drupal syntax highlighting.
+ * @param tree Root node of the HAST tree
+ */
+function fixCodeBlocks(tree: Node) {
+	visit(tree, "element", (node: Element) => {
+		if (node.tagName === "code" && node.children.length > 0) {
 			const firstChild = node.children[0];
 			if (firstChild && firstChild.type === "text" && "value" in firstChild) {
 				firstChild.value = firstChild.value.trim();
 			}
-		}
-
-		function isShellCode(node: Element): boolean {
-			return (
-				node.tagName === "code" &&
-				Array.isArray(node.properties?.className) &&
-				(node.properties?.className.includes("language-sh") ||
-					node.properties?.className.includes("language-bash"))
-			);
-		}
-
-		function convertShellToPhp(node: Element) {
 			if (
 				Array.isArray(node.properties?.className) &&
 				(node.properties?.className.includes("language-sh") ||
@@ -182,24 +184,29 @@ export function drupalFixupPlugin() {
 				node.properties.className = ["language-php"];
 			}
 		}
+	});
+}
 
-		// Remove <p> wrapping <div class="img-grid--1">
-		visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {
-			if (node.tagName === "p" && node.children.length > 0) {
-				const firstChild = node.children[0];
-				if (firstChild && firstChild.type === "element") {
-					const child = firstChild as Element;
-					if (
-						child.tagName === "div" &&
-						child.properties &&
-						child.properties.className === "img-grid--1"
-					) {
-						if (parent?.children) {
-							parent.children[index] = child;
-						}
+/**
+ * Unwraps <div class="img-grid--1"> from enclosing <p> tags to prevent invalid HTML nesting.
+ * @param tree Root node of the HAST tree
+ */
+function unwrapImageDivs(tree: Node) {
+	visit(tree, "element", (node: Element, index: number, parent: Parent | null) => {
+		if (node.tagName === "p" && node.children.length > 0) {
+			const firstChild = node.children[0];
+			if (firstChild && firstChild.type === "element") {
+				const child = firstChild as Element;
+				if (
+					child.tagName === "div" &&
+					child.properties &&
+					child.properties.className === "img-grid--1"
+				) {
+					if (parent?.children) {
+						parent.children[index] = child;
 					}
 				}
 			}
-		});
-	};
+		}
+	});
 }
