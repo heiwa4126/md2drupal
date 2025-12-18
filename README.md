@@ -177,4 +177,4 @@ pnpm install --no-frozen-lockfile
 ## メモ: v0.0.9 以前でコミット間違えてた...
 
 (v0.0.10 で修正のはず)
-npm 上で Providence 切れるかもしれません。ごめん
+npm 上で Provenance 切れるかもしれません。ごめん
