@@ -30,7 +30,7 @@
 		"prepublishOnly": "pnpm run lint && pnpm run test && pnpm run clean && pnpm run build && pnpm run smoke-test",
 		"lint": "biome lint .",
 		"format": "biome format --write .",
-		"format:full": "pnpm pkg fix && biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
+		"format:all": "pnpm pkg fix && biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
 		"esm-smoke1": "node dist/cli.js -h",
 		"smoke-test": "pnpm run esm-smoke1 && node smoke_test/ex1.mjs && node smoke_test/ex1.cjs && tsx smoke_test/ex1.ts",
 		"prepack": "clean-publish-scripts -c",
