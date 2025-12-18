@@ -173,3 +173,8 @@ pnpm install --no-frozen-lockfile
 ```
 
 を実行するのを忘れないこと。package.json から消しても pnpm-lock.yaml には残る。
+
+## メモ: v0.0.9 以前でコミット間違えてた...
+
+(v0.0.10 で修正のはず)
+npm 上で Providence 切れるかもしれません。ごめん
