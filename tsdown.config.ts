@@ -7,24 +7,24 @@ function fixCjsExtension({ format }: { format: string }) {
 
 export default defineConfig([
 	{
+		clean: true,
 		entry: ["src/**/*.ts", "!src/cli.ts", "!src/**/*.test.ts"],
 		format: ["esm", "cjs"],
 		outDir: "dist",
 		unbundle: true,
-		sourcemap: false,
-		clean: true,
+		sourcemap: true,
 		dts: true,
 		outExtensions: fixCjsExtension,
 	},
 	{
+		clean: false,
 		entry: ["src/cli.ts"],
 		format: ["esm"],
 		outDir: "dist",
 		unbundle: true,
 		sourcemap: false,
-		clean: false,
-		minify: true,
 		dts: false,
+		minify: true,
 		outExtensions: fixCjsExtension,
 	},
 ]);
