@@ -14,5 +14,6 @@
 	"editor.codeActionsOnSave": {
 		"source.organizeImports.biome": "explicit",
 		"source.fixAll.biome": "explicit"
-	}
+	},
+	"github-actions.workflows.pinned.workflows": [".github/workflows/publish.yml"]
 }

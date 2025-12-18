@@ -6,7 +6,7 @@
 
 Markdown から、ある特殊な Drupal 入力用の HTML に変換するツール。
 
-[Unified](https://github.com/unifiedjs/unified) と TypeScript のパッケージングの練習でもある。
+[Unified](https://github.com/unifiedjs/unified) と TypeScript のパッケージングの練習でもある。ほんとうに特定の状況向けに作ってるので、変な処理がいろいろ入ってるのでごめんなさい。
 
 ## Install
 
