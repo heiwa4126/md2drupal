@@ -11,7 +11,7 @@ export default defineConfig([
 		entry: ["src/**/*.ts", "!src/cli.ts", "!src/**/*.test.ts"],
 		format: ["esm", "cjs"],
 		outDir: "dist",
-		unbundle: true,
+		unbundle: false,
 		sourcemap: true,
 		dts: true,
 		outExtensions: fixCjsExtension,

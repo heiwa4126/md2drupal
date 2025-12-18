@@ -1,6 +1,6 @@
 {
 	"name": "@heiwa4126/md2drupal",
-	"version": "0.0.10-rc.1",
+	"version": "0.0.11-rc.1",
 	"type": "module",
 	"main": "./dist/converter1.js",
 	"types": "./dist/converter1.d.ts",
@@ -36,7 +36,7 @@
 		"smoke-test": "run-p smoke-test:*",
 		"prepack": "clean-publish-scripts -c",
 		"postpack": "clean-publish-scripts -r",
-		"version:prerelase": "npm version prerelease --preid=rc",
+		"version:prepatch": "npm version prepatch --preid=rc",
 		"version:patch": "npm version patch",
 		"trivy": "trivy config . && trivy fs --exit-code 1 --severity HIGH,CRITICAL .",
 		"sbom": "trivy fs --scanners vuln --format spdx-json --output sbom.spdx.json .",
