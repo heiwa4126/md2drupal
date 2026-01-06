@@ -45,7 +45,7 @@
 		"lizard:all": "lizard -EDuplicate .",
 		"smells:all": "qlty smells --all --quiet",
 		"qlty": "qlty metrics --functions --all --quiet",
-		"g": "run-s prepublishOnly format:all osv-scan"
+		"g": "run-s osv-scan format:all prepublishOnly"
 	},
 	"keywords": [
 		"markdown",
