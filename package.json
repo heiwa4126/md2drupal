@@ -36,16 +36,16 @@
 		"smoke-test": "run-p smoke-test:*",
 		"prepack": "clean-publish-scripts -c",
 		"postpack": "clean-publish-scripts -r",
-		"version:prepatch": "npm version prepatch --preid=rc",
-		"version:patch": "npm version patch",
+		"ver": "pnpm pkg get version",
 		"trivy": "trivy config . && trivy fs --exit-code 1 --severity HIGH,CRITICAL .",
 		"sbom": "trivy fs --scanners vuln --format spdx-json --output sbom.spdx.json .",
-		"osv-scan": "osv-scanner -r .",
+		"osv-scan": "osv-scanner scan -L ./pnpm-lock.yaml",
 		"cloc": "cloc $(git ls-files|grep -Fv pnpm-lock.yaml)",
 		"lizard": "lizard -EDuplicate -w .",
 		"lizard:all": "lizard -EDuplicate .",
 		"smells:all": "qlty smells --all --quiet",
-		"qlty": "qlty metrics --functions --all --quiet"
+		"qlty": "qlty metrics --functions --all --quiet",
+		"g": "run-s prepublishOnly format:all osv-scan"
 	},
 	"keywords": [
 		"markdown",
