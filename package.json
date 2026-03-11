@@ -86,12 +86,12 @@
 		"tsdown": "^0.20.3",
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",
-		"vitest": "^4.0.18"
+		"vitest": "^4.0.18",
+		"npm-run-all2": "^8.0.4"
 	},
 	"dependencies": {
 		"commander": "^14.0.3",
 		"escape-html": "^1.0.3",
-		"npm-run-all2": "^8.0.4",
 		"rehype-stringify": "^10.0.1",
 		"remark-extract-frontmatter": "^3.2.0",
 		"remark-frontmatter": "^5.0.0",
