@@ -12,6 +12,7 @@ export default defineConfig([
 		format: ["esm", "cjs"],
 		outDir: "dist",
 		unbundle: false,
+		inlineOnly: false,
 		sourcemap: true,
 		dts: true,
 		outExtensions: fixCjsExtension,
