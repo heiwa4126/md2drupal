@@ -1,6 +1,6 @@
 {
 	"name": "@heiwa4126/md2drupal",
-	"version": "0.0.13-rc.3",
+	"version": "0.0.13",
 	"description": "Convert Markdown to Drupal-compatible HTML using the Unified ecosystem (remark/rehype)",
 	"keywords": [
 		"cli",
