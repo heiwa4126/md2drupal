@@ -11,6 +11,7 @@ TypeScript-based CLI tool that converts Markdown to Drupal-compatible HTML using
 Two-pass processing pipeline:
 
 **First Pass** (Title & Front Matter extraction):
+
 1. `remarkParse` - Parse Markdown to mdast
 2. `remarkGfm` - Add GFM support
 3. `remarkFrontmatter` - Recognize YAML Front Matter as mdast node
@@ -20,6 +21,7 @@ Two-pass processing pipeline:
 7. Extract first heading text for title, store Front Matter data
 
 **Second Pass** (Full conversion):
+
 1. `remarkParse` - Parse Markdown to mdast
 2. `remarkGfm` - Add GFM support (tables, strikethrough, etc.)
 3. `remarkFrontmatter` - Recognize and remove YAML Front Matter from output
@@ -42,29 +44,36 @@ The plugin uses `unist-util-visit` to traverse the hast tree and applies:
 ### YAML Front Matter & Meta Tags (src/converter1.ts)
 
 **FrontMatterData Interface**:
+
 ```typescript
 export interface FrontMatterData {
-  description?: string;
-  keywords?: string | string[];
-  author?: string;
+	description?: string;
+	keywords?: string | string[];
+	author?: string;
 }
 ```
 
 **Meta Tag Generation**:
+
 - `generateMetaTags(data: FrontMatterData): string` - Generates HTML meta tags from Front Matter
 - Uses `escape-html` for XSS protection on all content attribute values
 - Keywords: Arrays are joined with ", " (comma + space)
 - Returns empty string if no Front Matter fields present
 
 **HTML Output Structure**:
+
 ```html
 <head>
-  <meta charset="utf-8">  <!-- Always first element -->
-  <title>...</title>
-  <meta name="description" content="...">  <!-- If present in Front Matter -->
-  <meta name="keywords" content="...">     <!-- If present in Front Matter -->
-  <meta name="author" content="...">       <!-- If present in Front Matter -->
-  <!-- CSS link and style (if includeCss option) -->
+	<meta charset="utf-8" />
+	<!-- Always first element -->
+	<title>...</title>
+	<meta name="description" content="..." />
+	<!-- If present in Front Matter -->
+	<meta name="keywords" content="..." />
+	<!-- If present in Front Matter -->
+	<meta name="author" content="..." />
+	<!-- If present in Front Matter -->
+	<!-- CSS link and style (if includeCss option) -->
 </head>
 ```
 
@@ -74,7 +83,7 @@ The `convertMarkdownToHTML` function accepts an optional `ConvertOptions` parame
 
 ```typescript
 export interface ConvertOptions {
-  includeCss?: boolean;
+	includeCss?: boolean;
 }
 ```
 
@@ -85,6 +94,7 @@ export interface ConvertOptions {
 - **`includeCss: false` or undefined (default)**: Generates minimal HTML for Drupal CMS pasting
 
 **Constants**:
+
 - `DEFAULT_CSS_URL`: GitHub Markdown CSS CDN URL (currently 5.8.1)
 - `DEFAULT_PADDING`: Body padding value (`"1.5em"`)
 
@@ -117,9 +127,10 @@ Default behavior: converts `input.md` to `input.html` in the same directory. She
 
 ### File-based Integration Tests (src/converter1.test.ts)
 
-Converts testdata/*.md files and compares against golden *.html files. Tests use `import.meta.dirname` for path resolution.
+Converts testdata/_.md files and compares against golden _.html files. Tests use `import.meta.dirname` for path resolution.
 
 **Test Data**:
+
 - `test1.md`: Complex document with tables, images, code blocks (Drupal-specific transformations)
 - `test2.md`: Japanese characters and special characters in headers (anchor link consistency)
 - `test3.md`: Simple document with headings, paragraphs, lists
@@ -131,6 +142,7 @@ Converts testdata/*.md files and compares against golden *.html files. Tests use
 **All expected HTML files include `<meta charset="utf-8">` as the first element in `<head>`**
 
 **Helper Functions**:
+
 - `testConversion(testName, options?)`: Converts markdown and compares with expected HTML
   - Accepts optional `ConvertOptions` parameter
   - Selects appropriate expected file based on `options.includeCss`
@@ -148,12 +160,12 @@ Direct testing of Unified plugin transformations. Build processor inline:
 
 ```typescript
 const result = await unified()
-  .use(remarkParse)
-  .use(remarkGfm)
-  .use(remarkRehype)
-  .use(drupalFixupPlugin)
-  .use(rehypeStringify)
-  .process(markdown);
+	.use(remarkParse)
+	.use(remarkGfm)
+	.use(remarkRehype)
+	.use(drupalFixupPlugin)
+	.use(rehypeStringify)
+	.process(markdown);
 ```
 
 **Critical**: Anchor link consistency tests validate that header IDs match remark-generated TOC hrefs character-for-character (URL-encoding must match exactly).
@@ -175,7 +187,6 @@ const result = await unified()
 4. Build
 5. Smoke test (verify CLI works in both formats)
 
-
 ## Code Quality Tools
 
 - **Biome**: Linter and formatter (100 char line width, strict rules in biome.jsonc)
@@ -191,6 +202,7 @@ const result = await unified()
 - If duplication or complexity is found in production code, refactor by extracting small functions and simplifying logic. Confirm all tests pass after refactoring.
 
 #### Example Policy
+
 - No function in production code should exceed CCN 15 (lizard warning threshold).
 - Test code should avoid copy-paste by using parameterized tests and shared helpers.
 - Document any exceptions or justified complexity in this file.
@@ -227,7 +239,7 @@ Pattern from drupal_fixup.ts - check type before accessing properties:
 
 ```typescript
 if (firstChild && firstChild.type === "text" && "value" in firstChild) {
-  firstChild.value = firstChild.value.trim();
+	firstChild.value = firstChild.value.trim();
 }
 ```
 

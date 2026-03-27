@@ -1,6 +1,35 @@
 {
 	"name": "@heiwa4126/md2drupal",
 	"version": "0.0.13-rc.2",
+	"description": "Convert Markdown to Drupal-compatible HTML using the Unified ecosystem (remark/rehype)",
+	"keywords": [
+		"cli",
+		"converter",
+		"drupal",
+		"html",
+		"markdown",
+		"rehype",
+		"remark",
+		"unified"
+	],
+	"homepage": "https://github.com/heiwa4126/md2drupal#readme",
+	"bugs": {
+		"url": "https://github.com/heiwa4126/md2drupal/issues"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/heiwa4126/md2drupal.git"
+	},
+	"bin": {
+		"md2drupal": "dist/cli.js"
+	},
+	"files": [
+		"dist/**/*.js",
+		"dist/**/*.cjs",
+		"dist/**/*.d.ts",
+		"!dist/**/*.map"
+	],
 	"type": "module",
 	"main": "./dist/converter1.js",
 	"types": "./dist/converter1.d.ts",
@@ -16,9 +45,6 @@
 			}
 		}
 	},
-	"bin": {
-		"md2drupal": "dist/cli.js"
-	},
 	"scripts": {
 		"cli": "tsx src/cli.ts",
 		"build": "tsdown",
@@ -28,9 +54,11 @@
 		"test:coverage": "vitest run --coverage",
 		"clean": "rm -rf dist",
 		"prepublishOnly": "pnpm run lint && pnpm run test && pnpm run clean && pnpm run build && pnpm run smoke-test",
-		"lint": "biome lint .",
-		"format": "biome format --write .",
-		"format:all": "pnpm pkg fix --loglevel=error && biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
+		"format": "oxfmt",
+		"lint": "oxlint",
+		"check": "oxfmt && oxlint --fix",
+		"format:pkg": "pnpm pkg fix --loglevel=error",
+		"format:all": "run-s format:pkg check",
 		"smoke-test:cli": "node dist/cli.js -h",
 		"smoke-test:node": "node smoke_test/ex1.mjs && node smoke_test/ex1.cjs && tsx smoke_test/ex1.ts",
 		"smoke-test": "run-p smoke-test:*",
@@ -47,48 +75,6 @@
 		"qlty": "qlty metrics --functions --all --quiet",
 		"g": "run-s osv-scan format:all prepublishOnly"
 	},
-	"keywords": [
-		"markdown",
-		"drupal",
-		"html",
-		"converter",
-		"unified",
-		"remark",
-		"rehype",
-		"cli"
-	],
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/heiwa4126/md2drupal.git"
-	},
-	"bugs": {
-		"url": "https://github.com/heiwa4126/md2drupal/issues"
-	},
-	"homepage": "https://github.com/heiwa4126/md2drupal#readme",
-	"license": "MIT",
-	"description": "Convert Markdown to Drupal-compatible HTML using the Unified ecosystem (remark/rehype)",
-	"files": [
-		"dist/**/*.js",
-		"dist/**/*.cjs",
-		"dist/**/*.d.ts",
-		"!dist/**/*.map"
-	],
-	"devDependencies": {
-		"@biomejs/biome": "^2.4.6",
-		"@heiwa4126/clean-publish-scripts": "^0.0.4",
-		"@types/escape-html": "^1.0.4",
-		"@types/hast": "^3.0.4",
-		"@types/mdast": "^4.0.4",
-		"@types/node": "^25.4.0",
-		"@types/unist": "^3.0.3",
-		"@vitest/coverage-v8": "4.0.18",
-		"linkedom": "^0.18.12",
-		"tsdown": "^0.20.3",
-		"tsx": "^4.21.0",
-		"typescript": "^5.9.3",
-		"vitest": "^4.0.18",
-		"npm-run-all2": "^8.0.4"
-	},
 	"dependencies": {
 		"commander": "^14.0.3",
 		"escape-html": "^1.0.3",
@@ -100,7 +86,24 @@
 		"remark-rehype": "^11.1.2",
 		"unified": "^11.0.5",
 		"unist-util-visit": "^5.1.0",
-		"yaml": "^2.8.2"
+		"yaml": "^2.8.3"
+	},
+	"devDependencies": {
+		"@heiwa4126/clean-publish-scripts": "^0.0.6",
+		"@types/escape-html": "^1.0.4",
+		"@types/hast": "^3.0.4",
+		"@types/mdast": "^4.0.4",
+		"@types/node": "^25.5.0",
+		"@types/unist": "^3.0.3",
+		"@vitest/coverage-v8": "4.1.2",
+		"linkedom": "^0.18.12",
+		"npm-run-all2": "^8.0.4",
+		"oxfmt": "^0.42.0",
+		"oxlint": "^1.57.0",
+		"tsdown": "^0.21.5",
+		"tsx": "^4.21.0",
+		"typescript": "^6.0.2",
+		"vitest": "^4.1.2"
 	},
 	"engines": {
 		"node": ">=18.0.0"

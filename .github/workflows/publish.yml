@@ -20,7 +20,7 @@ jobs:
   osv-scan:
     if: github.repository_owner == github.actor
     ## Only run if pushed by repository owner
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@c5996e0193a3df57d695c1b8a1dec2a4c62e8730 # v2.3.3
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@c51854704019a247608d928f370c98740469d4b5 # v2.3.5
     permissions:
       actions: read # reusable workflow の実行に必要
       security-events: write # 脆弱性スキャン結果(SARIF形式)を  GitHub の Security タブにアップロードするために必要
@@ -41,6 +41,6 @@ jobs:
       id-token: write # OIDC に必須
     steps:
       - name: Build and Publish
-        uses: heiwa4126/reusable-workflows/build-pnpm-package-and-publish@0518f9c52182a3b0f357303fff0e560327ea844b # v0.0.9
+        uses: heiwa4126/reusable-workflows/build-pnpm-package-and-publish@f1d72b6c8ae078c37a2820f29e0bef978013a120 # v0.0.10
         with:
           checkout: true
