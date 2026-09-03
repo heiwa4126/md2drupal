@@ -114,7 +114,7 @@ function generateMetaTags(data: FrontMatterData): string {
 export async function convertMarkdownToHTML(
 	inputFilePath: string,
 	outputFilePath: string,
-	options?: ConvertOptions,
+	options?: ConvertOptions
 ) {
 	const mdContent = readFileSync(inputFilePath, "utf-8");
 

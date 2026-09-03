@@ -21,7 +21,7 @@ program
 			options.output ||
 			path.join(
 				path.dirname(inputFilePath),
-				`${path.basename(inputFilePath, path.extname(inputFilePath))}.html`,
+				`${path.basename(inputFilePath, path.extname(inputFilePath))}.html`
 			);
 
 		const convertOptions: ConvertOptions = options.css ? { includeCss: true } : {};

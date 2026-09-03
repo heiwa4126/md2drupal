@@ -18,10 +18,10 @@ function processTableNode(node: Element, index: number, parent: Parent | null) {
 				...node,
 				properties: {
 					...node.properties,
-					className: ["table-headling-x"],
-				},
-			},
-		],
+					className: ["table-headling-x"]
+				}
+			}
+		]
 	};
 	if (parent?.children) {
 		parent.children[index] = tableWrapper;
@@ -61,14 +61,14 @@ function processImageNode(node: Element, index: number, parent: Parent | null) {
 								image_link: "",
 								image_loading: { attribute: "lazy" },
 								svg_render_as_image: true,
-								svg_attributes: { width: "", height: "" },
-							}),
+								svg_attributes: { width: "", height: "" }
+							})
 						},
-						children: [],
-					},
-				],
-			},
-		],
+						children: []
+					}
+				]
+			}
+		]
 	};
 	if (parent?.children) {
 		parent.children[index] = imgWrapper;

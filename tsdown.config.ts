@@ -15,7 +15,7 @@ export default defineConfig([
 		inlineOnly: false,
 		sourcemap: true,
 		dts: true,
-		outExtensions: fixCjsExtension,
+		outExtensions: fixCjsExtension
 	},
 	{
 		clean: false,
@@ -26,6 +26,6 @@ export default defineConfig([
 		sourcemap: false,
 		dts: false,
 		minify: true,
-		outExtensions: fixCjsExtension,
-	},
+		outExtensions: fixCjsExtension
+	}
 ]);

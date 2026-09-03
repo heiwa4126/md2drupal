@@ -6,10 +6,10 @@
 	"singleQuote": false,
 	"jsxSingleQuote": false,
 	"quoteProps": "as-needed",
-	"trailingComma": "all",
+	"trailingComma": "none",
 	"semi": true,
 	"arrowParens": "always",
 	"bracketSameLine": false,
-	"bracketSpacing": true,
+	"bracketSpacing": true
 	// "ignorePatterns": ["**/*.html", "**/*.htm", "**/*.css"]
 }

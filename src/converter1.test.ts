@@ -68,7 +68,7 @@ describe("convertMarkdownToHTML", () => {
 	function getTestFilePaths(testName: string, outputName: string) {
 		return {
 			inputFile: path.join(import.meta.dirname, "..", "testdata", `${testName}.md`),
-			outputFile: path.join(TEST_OUTPUT_DIR, `${outputName}.html`),
+			outputFile: path.join(TEST_OUTPUT_DIR, `${outputName}.html`)
 		};
 	}
 
@@ -86,7 +86,7 @@ describe("convertMarkdownToHTML", () => {
 	 */
 	async function testConversion(
 		testName: string,
-		options?: { includeCss?: boolean },
+		options?: { includeCss?: boolean }
 	): Promise<void> {
 		const { inputFile, outputFile } = getTestFilePaths(testName, `${testName}_output`);
 		await convertMarkdownToHTML(inputFile, outputFile, options);
@@ -106,7 +106,7 @@ describe("convertMarkdownToHTML", () => {
 		["test2", undefined, "test2_expected.html"],
 		["test3", undefined, "test3_expected.html"],
 		["test3", { includeCss: true }, "test3_expected_with_css.html"],
-		["test4", undefined, "test4_expected.html"],
+		["test4", undefined, "test4_expected.html"]
 	])("should convert %s.md to HTML matching %s", async (testName, options, _expectedFile) => {
 		await testConversion(testName, options);
 	});
@@ -118,7 +118,7 @@ describe("convertMarkdownToHTML", () => {
 			"new_output",
 			(_html: string, outputFile: string) => {
 				expect(existsSync(outputFile)).toBe(true);
-			},
+			}
 		],
 		[
 			"should generate valid HTML with DOCTYPE and basic structure",
@@ -133,7 +133,7 @@ describe("convertMarkdownToHTML", () => {
 				expect(html).toContain("<body>");
 				expect(html).toContain("</body>");
 				expect(html).toContain("</html>");
-			},
+			}
 		],
 		[
 			"should handle headers with URL-encoded IDs",
@@ -143,7 +143,7 @@ describe("convertMarkdownToHTML", () => {
 				expect(html).toContain('id="h1"');
 				expect(html).toContain('id="h2"');
 				expect(html).toContain('id="h3"');
-			},
+			}
 		],
 		[
 			"should wrap tables in div.table-layer",
@@ -152,7 +152,7 @@ describe("convertMarkdownToHTML", () => {
 			(html: string, _outputFile: string) => {
 				expect(html).toContain('<div class="table-layer">');
 				expect(html).toContain('<table class="table-headling-x">');
-			},
+			}
 		],
 		[
 			"should wrap images in Drupal structure",
@@ -163,7 +163,7 @@ describe("convertMarkdownToHTML", () => {
 				expect(html).toContain('<div class="lb-gallery">');
 				expect(html).toContain("<drupal-entity");
 				expect(html).toContain('data-entity-type="media"');
-			},
+			}
 		],
 		[
 			"should convert bash/sh code blocks to php language class",
@@ -174,8 +174,8 @@ describe("convertMarkdownToHTML", () => {
 				expect(html).toContain('<code class="language-php">');
 				expect(html).not.toContain('<code class="language-bash">');
 				expect(html).not.toContain('<code class="language-sh">');
-			},
-		],
+			}
+		]
 	])("%s", async (_desc, testName, outputName, check) => {
 		const { outputFile } = getTestFilePaths(testName, outputName);
 		const html = await convertAndRead(testName, outputName);
@@ -204,10 +204,10 @@ describe("convertMarkdownToHTML", () => {
 		// Check URL-encoded IDs for special characters
 		expect(generatedHTML).toContain('id="%E7%9B%AE%E6%AC%A1"'); // 目次
 		expect(generatedHTML).toContain(
-			'id="%E6%8B%AC%E5%BC%A7%E3%81%AE%E3%83%86%E3%82%B9%E3%83%88-sigstore%E3%82%B7%E3%82%B0%E3%82%B9%E3%83%88%E3%82%A2%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B"',
+			'id="%E6%8B%AC%E5%BC%A7%E3%81%AE%E3%83%86%E3%82%B9%E3%83%88-sigstore%E3%82%B7%E3%82%B0%E3%82%B9%E3%83%88%E3%82%A2%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B"'
 		); // 括弧のテスト
 		expect(generatedHTML).toContain(
-			'href="#%E7%96%91%E5%95%8F%E7%AC%A6%E3%81%AE%E3%83%86%E3%82%B9%E3%83%88-%E3%81%AA%E3%81%9C%E7%9F%AD%E5%91%BD%E3%81%AA%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%82%92%E4%BD%BF%E3%81%86%E3%81%AE%E3%81%8B"',
+			'href="#%E7%96%91%E5%95%8F%E7%AC%A6%E3%81%AE%E3%83%86%E3%82%B9%E3%83%88-%E3%81%AA%E3%81%9C%E7%9F%AD%E5%91%BD%E3%81%AA%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%82%92%E4%BD%BF%E3%81%86%E3%81%AE%E3%81%8B"'
 		); // 疑問符のテスト
 	});
 
@@ -252,7 +252,7 @@ describe("convertMarkdownToHTML", () => {
 		// Check for CSS link
 		expect(generatedHTML).toContain('<link rel="stylesheet" href="');
 		expect(generatedHTML).toContain(
-			"https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css",
+			"https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
 		);
 
 		// Check for style tag with padding
@@ -286,14 +286,14 @@ describe("convertMarkdownToHTML", () => {
 	test("should extract and use Front Matter description for meta tag", async () => {
 		const generatedHTML = await convertAndRead("test4", "frontmatter_description_test");
 		expect(generatedHTML).toContain(
-			'<meta name="description" content="This is a test document for YAML Front Matter support in md2drupal. It demonstrates meta tag generation from Front Matter data.">',
+			'<meta name="description" content="This is a test document for YAML Front Matter support in md2drupal. It demonstrates meta tag generation from Front Matter data.">'
 		);
 	});
 
 	test("should extract and use Front Matter keywords (array) for meta tag", async () => {
 		const generatedHTML = await convertAndRead("test4", "frontmatter_keywords_test");
 		expect(generatedHTML).toContain(
-			'<meta name="keywords" content="markdown, drupal, yaml, front-matter, html, meta-tags">',
+			'<meta name="keywords" content="markdown, drupal, yaml, front-matter, html, meta-tags">'
 		);
 	});
 

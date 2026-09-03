@@ -33,19 +33,19 @@ describe("drupalFixupPlugin", () => {
 				markdown: "## 目次\n\n## Test Heading",
 				expects: [
 					{ type: "contain", value: 'id="%E7%9B%AE%E6%AC%A1"' },
-					{ type: "contain", value: 'id="test-heading"' },
-				],
+					{ type: "contain", value: 'id="test-heading"' }
+				]
 			},
 			{
 				name: "should remove special characters before encoding",
 				markdown: '## CLI "cosign"の使い方',
-				expects: [{ type: "contain", value: "cli-cosign" }],
+				expects: [{ type: "contain", value: "cli-cosign" }]
 			},
 			{
 				name: "should handle multiple special characters",
 				markdown: '## 疑問 1: "Fulcio CA" の秘密鍵で署名しないのはなぜ?',
-				expects: [{ type: "match", value: /id="[^"]*%E7%96%91%E5%95%8F-1-fulcio-ca/ }],
-			},
+				expects: [{ type: "match", value: /id="[^"]*%E7%96%91%E5%95%8F-1-fulcio-ca/ }]
+			}
 		])("$name", async ({ markdown, expects }) => {
 			const html = await processMarkdown(markdown);
 			for (const exp of expects) {
@@ -73,14 +73,14 @@ describe("drupalFixupPlugin", () => {
 					{ type: "contain", value: '<div class="lb-gallery">' },
 					{ type: "contain", value: "<drupal-entity" },
 					{ type: "contain", value: 'alt="alt text"' },
-					{ type: "contain", value: 'title="alt text"' },
-				],
+					{ type: "contain", value: 'title="alt text"' }
+				]
 			},
 			{
 				name: "should remove <p> wrapping around image divs",
 				markdown: "![test](image.png)",
-				expects: [{ type: "notMatch", value: /<p[^>]*>\s*<div class="img-grid--1">/ }],
-			},
+				expects: [{ type: "notMatch", value: /<p[^>]*>\s*<div class="img-grid--1">/ }]
+			}
 		])("$name", async ({ markdown, expects }) => {
 			const html = await processMarkdown(markdown);
 			for (const exp of expects) {
@@ -97,30 +97,30 @@ describe("drupalFixupPlugin", () => {
 				markdown: "```sh\n```",
 				expects: [
 					{ type: "contain", value: 'class="language-php"' },
-					{ type: "notContain", value: 'class="language-sh"' },
-				],
+					{ type: "notContain", value: 'class="language-sh"' }
+				]
 			},
 			{
 				name: "should convert language-sh to language-php",
 				markdown: "```sh\nls -la\n```",
 				expects: [
 					{ type: "contain", value: 'class="language-php"' },
-					{ type: "notContain", value: 'class="language-sh"' },
-				],
+					{ type: "notContain", value: 'class="language-sh"' }
+				]
 			},
 			{
 				name: "should convert language-bash to language-php",
 				markdown: "```bash\necho hello\n```",
 				expects: [
 					{ type: "contain", value: 'class="language-php"' },
-					{ type: "notContain", value: 'class="language-bash"' },
-				],
+					{ type: "notContain", value: 'class="language-bash"' }
+				]
 			},
 			{
 				name: "should trim code content",
 				markdown: "```python\n  code with spaces  \n```",
-				expects: [{ type: "contain", value: "code with spaces" }],
-			},
+				expects: [{ type: "contain", value: "code with spaces" }]
+			}
 		])("$name", async ({ markdown, expects }) => {
 			const html = await processMarkdown(markdown);
 			for (const exp of expects) {
@@ -153,17 +153,17 @@ describe("drupalFixupPlugin", () => {
 			{
 				text: "括弧のテスト: Sigstore(シグストア)とは何か",
 				expected:
-					"%E6%8B%AC%E5%BC%A7%E3%81%AE%E3%83%86%E3%82%B9%E3%83%88-sigstore%E3%82%B7%E3%82%B0%E3%82%B9%E3%83%88%E3%82%A2%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B",
+					"%E6%8B%AC%E5%BC%A7%E3%81%AE%E3%83%86%E3%82%B9%E3%83%88-sigstore%E3%82%B7%E3%82%B0%E3%82%B9%E3%83%88%E3%82%A2%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B"
 			},
 			{
 				text: "コロンのテスト: 補足: Provenance について",
 				expected:
-					"%E3%82%B3%E3%83%AD%E3%83%B3%E3%81%AE%E3%83%86%E3%82%B9%E3%83%88-%E8%A3%9C%E8%B6%B3-provenance-%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6",
+					"%E3%82%B3%E3%83%AD%E3%83%B3%E3%81%AE%E3%83%86%E3%82%B9%E3%83%88-%E8%A3%9C%E8%B6%B3-provenance-%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"
 			},
 			{
 				text: 'CLI "cosign"の使い方',
-				expected: "cli-cosign%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9",
-			},
+				expected: "cli-cosign%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9"
+			}
 		])("should handle special characters consistently: $text", async ({ text, expected }) => {
 			const html = await processMarkdown(`## ${text}`);
 			expect(html).toContain(`id="${expected}"`);
