@@ -6,7 +6,7 @@
 
 Markdown から、ある特殊な Drupal 入力用の HTML に変換するツール。
 
-[Unified](https://github.com/unifiedjs/unified) と TypeScript のパッケージングの練習でもある。ほんとうに特定の状況向けに作ってるので、変な処理がいろいろ入ってるのでごめんなさい。
+[Unified](https://github.com/unifiedjs/unified)と TypeScript のパッケージングの練習でもある。ほんとうに特定の状況向けに作ってるので、変な処理がいろいろ入ってるのでごめんなさい。
 
 ## Install
 
@@ -45,7 +45,7 @@ md2drupal input.md -c -o preview.html
 
 ### 自動タイトル生成
 
-変換される HTML の `<title>` タグは、Markdown ファイル内の最初のヘッダ要素（h1-h6）のテキストから自動的に生成されます。
+変換される HTML の`<title>`タグは、Markdown ファイル内の最初のヘッダ要素（h1-h6）のテキストから自動的に生成されます。
 
 ```markdown
 # プロジェクトのドキュメント
@@ -69,11 +69,11 @@ md2drupal input.md -c -o preview.html
 ```
 
 - ヘッダ内のインライン要素（リンク、強調など）はプレーンテキストとして抽出されます
-- ヘッダが見つからない場合は、デフォルトで `"Converted HTML"` が使用されます
+- ヘッダが見つからない場合は、デフォルトで`"Converted HTML"`が使用されます
 
 ### YAML Front Matter サポート
 
-Markdown ファイルの先頭に YAML Front Matter を記述することで、HTML の `<meta>` タグを自動生成できます。
+Markdown ファイルの先頭に YAML Front Matter を記述することで、HTML の`<meta>`タグを自動生成できます。
 
 ```markdown
 ---
@@ -90,7 +90,7 @@ author: "著者名"
 本文...
 ```
 
-↓ 変換後の `<head>` 内
+↓ 変換後の`<head>`内
 
 ```html
 <head>
@@ -104,9 +104,9 @@ author: "著者名"
 
 **対応フィールド**:
 
-- `description` - `<meta name="description">` タグとして出力
-- `keywords` - 文字列または配列（配列の場合はカンマ区切りに変換）。`<meta name="keywords">` タグとして出力
-- `author` - `<meta name="author">` タグとして出力
+- `description` - `<meta name="description">`タグとして出力
+- `keywords` - 文字列または配列（配列の場合はカンマ区切りに変換）。`<meta name="keywords">`タグとして出力
+- `author` - `<meta name="author">`タグとして出力
 
 **セキュリティ**: すべてのメタタグの content 属性値は HTML エスケープされます（XSS 対策）。
 
@@ -114,7 +114,7 @@ author: "著者名"
 
 ### 文字エンコーディング
 
-全ての HTML 出力に `<meta charset="utf-8">` タグが自動的に追加されます（`<head>` の最初の要素）。
+全ての HTML 出力に`<meta charset="utf-8">`タグが自動的に追加されます（`<head>`の最初の要素）。
 
 ### スタイル付きプレビュー（`--css`オプション）
 
