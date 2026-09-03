@@ -56,6 +56,7 @@
 		"prepublishOnly": "pnpm run lint && pnpm run test && pnpm run clean && pnpm run build && pnpm run smoke-test",
 		"format": "oxfmt",
 		"lint": "oxlint",
+		"lint-tsc": "tsc --noEmit",
 		"check": "oxfmt && oxlint --fix",
 		"format:pkg": "pnpm pkg fix --loglevel=error",
 		"format:all": "run-s format:pkg check",
@@ -91,19 +92,19 @@
 	"devDependencies": {
 		"@heiwa4126/clean-publish-scripts": "^0.0.6",
 		"@types/escape-html": "^1.0.4",
-		"@types/hast": "^3.0.4",
+		"@types/hast": "^3.0.5",
 		"@types/mdast": "^4.0.4",
-		"@types/node": "^26.0.1",
+		"@types/node": "^26.4.1",
 		"@types/unist": "^3.0.3",
 		"@vitest/coverage-v8": "4.1.11",
-		"linkedom": "^0.18.12",
-		"npm-run-all2": "^9.0.2",
+		"linkedom": "^0.18.13",
+		"npm-run-all2": "^9.0.3",
 		"oxfmt": "^0.65.0",
-		"oxlint": "^1.72.0",
-		"tsdown": "^0.22.3",
-		"tsx": "^4.22.4",
+		"oxlint": "^1.81.0",
+		"tsdown": "^0.22.14",
+		"tsx": "^4.23.13",
 		"typescript": "^7.0.2",
-		"vitest": "^4.1.9"
+		"vitest": "^4.1.11"
 	},
 	"engines": {
 		"node": ">=18.0.0"
