@@ -13,9 +13,11 @@
 		"SARIF",
 		"testdata"
 	],
-	"editor.codeActionsOnSave": {
-		"source.organizeImports.biome": "explicit",
-		"source.fixAll.biome": "explicit"
-	},
-	"github-actions.workflows.pinned.workflows": [".github/workflows/publish.yml"]
+	"github-actions.workflows.pinned.workflows": [".github/workflows/publish.yml"],
+	"chat.tools.terminal.autoApprove": {
+		"/^pnpm run lint-tsc$/": {
+			"approve": true,
+			"matchCommandLine": true
+		}
+	}
 }

@@ -12,13 +12,13 @@ function processTableNode(node: Element, index: number, parent: Parent | null) {
 	const tableWrapper: Element = {
 		type: "element",
 		tagName: "div",
-		properties: { className: "table-layer" },
+		properties: { className: ["table-layer"] },
 		children: [
 			{
 				...node,
 				properties: {
 					...node.properties,
-					className: "table-headling-x",
+					className: ["table-headling-x"],
 				},
 			},
 		],
@@ -39,12 +39,12 @@ function processImageNode(node: Element, index: number, parent: Parent | null) {
 	const imgWrapper: Element = {
 		type: "element",
 		tagName: "div",
-		properties: { className: "img-grid--1" },
+		properties: { className: ["img-grid--1"] },
 		children: [
 			{
 				type: "element",
 				tagName: "div",
-				properties: { className: "lb-gallery" },
+				properties: { className: ["lb-gallery"] },
 				children: [
 					{
 						type: "element",
@@ -200,7 +200,8 @@ function unwrapImageDivs(tree: Node) {
 				if (
 					child.tagName === "div" &&
 					child.properties &&
-					child.properties.className === "img-grid--1"
+					Array.isArray(child.properties.className) &&
+					child.properties.className.includes("img-grid--1")
 				) {
 					if (parent?.children) {
 						parent.children[index] = child;
