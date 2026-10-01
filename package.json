@@ -96,15 +96,15 @@
 		"@types/mdast": "^4.0.4",
 		"@types/node": "^26.4.1",
 		"@types/unist": "^3.0.3",
-		"@vitest/coverage-v8": "4.1.11",
+		"@vitest/coverage-v8": "5.0.1",
 		"linkedom": "^0.18.13",
 		"npm-run-all2": "^9.0.3",
-		"oxfmt": "^0.65.0",
+		"oxfmt": "^0.70.0",
 		"oxlint": "^1.81.0",
-		"tsdown": "^0.22.14",
+		"tsdown": "^0.23.0",
 		"tsx": "^4.23.13",
 		"typescript": "^7.0.2",
-		"vitest": "^4.1.11"
+		"vitest": "^5.0.1"
 	},
 	"engines": {
 		"node": ">=18.0.0"
