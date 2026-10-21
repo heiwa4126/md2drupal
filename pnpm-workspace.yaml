@@ -1,3 +1,5 @@
 onlyBuiltDependencies:
   - esbuild
 # trustPolicy: no-downgrade
+overrides:
+  vite@<8.1.6: ">=8.1.6"
